@@ -1,0 +1,8 @@
+{snippet}
+  <div {if !empty($class)}class="{$class}"{/if}>
+    {if $user->isLoggedIn()}
+    {else}
+      <a href="{link register!}">Zaregistrovat se</a>
+    {/if}
+  </div>
+{/snippet}

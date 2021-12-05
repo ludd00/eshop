@@ -4,6 +4,8 @@ namespace App\FrontModule\Presenters;
 
 use App\FrontModule\Components\UserLoginControl\UserLoginControl;
 use App\FrontModule\Components\UserLoginControl\UserLoginControlFactory;
+use App\FrontModule\Components\UserRegisterControl\UserRegisterControl;
+use App\FrontModule\Components\UserRegisterControl\UserRegisterControlFactory;
 use Nette\Application\AbortException;
 use Nette\Application\ForbiddenRequestException;
 
@@ -15,7 +17,10 @@ abstract class BasePresenter extends \Nette\Application\UI\Presenter {
   /** @var UserLoginControlFactory $userLoginControlFactory */
   private $userLoginControlFactory;
 
-  /**
+  /** @var UserRegisterControlFactory $userRegisterControlFactory */
+  private $userRegisterControlFactory;
+
+    /**
    * @throws ForbiddenRequestException
    * @throws AbortException
    */
@@ -43,9 +48,25 @@ abstract class BasePresenter extends \Nette\Application\UI\Presenter {
     return $this->userLoginControlFactory->create();
   }
 
+    /**
+     * Komponenta pro asi registraci, zkouším všechno, chci to udělat taky jako signál, ale nejde mi to :(
+     * @return UserRegisterControl
+     */
+    public function createComponentUserRegister():UserRegisterControl {
+        return $this->userRegisterControlFactory->create();
+    }
+
   #region injections
-  public function injectUserLoginControlFactory(UserLoginControlFactory $userLoginControlFactory):void {
+
+    /**
+     * @param UserLoginControlFactory $userLoginControlFactory
+     */
+    public function injectUserLoginControlFactory(UserLoginControlFactory $userLoginControlFactory):void {
     $this->userLoginControlFactory=$userLoginControlFactory;
   }
+
+    public function injectUserRegisterControlFactory(UserRegisterControlFactory $userRegisterControlFactory):void {
+        $this->userRegisterControlFactory=$userRegisterControlFactory;
+    }
   #endregion injections
 }
