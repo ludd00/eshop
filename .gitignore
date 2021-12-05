@@ -1,2 +1,4 @@
 .idea
 .neon
+config/*
+.DS_Store
