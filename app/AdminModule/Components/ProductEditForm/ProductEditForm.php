@@ -2,6 +2,7 @@
 
 namespace App\AdminModule\Components\ProductEditForm;
 
+use App\Model\Entities\Category;
 use App\Model\Entities\Product;
 use App\Model\Facades\CategoriesFacade;
 use App\Model\Facades\ProductsFacade;
@@ -129,6 +130,7 @@ class ProductEditForm extends Form{
             }
             $product->assign($values,['title','url','description','available']);
             $product->price=floatval($values['price']);
+            $product->category= $this->categoriesFacade->getCategory($values['categoryId']);
             $this->productsFacade->saveProduct($product);
             $this->setValues(['productId'=>$product->productId]);
 
