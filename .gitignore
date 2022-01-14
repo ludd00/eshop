@@ -1,4 +1,4 @@
 .idea
 .neon
-config/*
+config/local.neon
 .DS_Store
