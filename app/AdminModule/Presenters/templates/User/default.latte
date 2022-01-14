@@ -16,6 +16,11 @@
                 <td>{$user->email}</td>
                 <td class="text-nowrap">
                     <a href="{link edit id=>$user->userId}" class="btn btn-sm btn-outline-primary">upravit</a>
+                    {if $user->blocked}
+                        <a n:href="blockById! id=>$user->userId" class="btn btn-sm btn-outline-success">odblokovat</a>
+                    {else}
+                        <a n:href="blockById! id=>$user->userId" class="btn btn-sm btn-outline-danger">zablokovat</a>
+                    {/if}
                 </td>
             </tr>
         {/foreach}
