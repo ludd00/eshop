@@ -24,6 +24,34 @@ class UserPresenter extends BasePresenter{
     $this->template->users=$this->usersFacade->findUsers(['order'=>'email']);
   }
 
+    /**
+     * Akce pro zablokování uživatele
+     * @throws \Nette\Application\AbortException
+     */
+    public function handleBlockById(int $id):void {
+        try{
+            $user=$this->usersFacade->getUser($id);
+        }catch (\Exception $e){
+            $this->flashMessage('Požadovaný uživatel nebyl nalezen.', 'error');
+            $this->redirect('default');
+        }
+
+        if(!empty($user)){
+            $user->blocked = !$user->blocked;
+            $this->usersFacade->saveUser($user);
+            if($user->blocked){
+                $this->flashMessage("Uživatel '" . $user->name . "' byl zablokován. ");
+            } else {
+                $this->flashMessage("Uživatel '" . $user->name . "' byl odblokován. ");
+            }
+            $this->redirect('default');
+        }
+        else {
+            $this->flashMessage("Uživatel nebyl nalezen. ");
+            $this->redirect('default');
+        }
+    }
+
   /**
    * Akce pro úpravu jednoho uživatele
    * @param int $id
