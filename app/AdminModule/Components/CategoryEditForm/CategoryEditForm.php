@@ -52,6 +52,7 @@ class CategoryEditForm extends Form{
             ->setRequired('Musíte zadat název kategorie');
         $this->addTextArea('description','Popis kategorie')
             ->setRequired(false);
+
         $this->addSubmit('ok','uložit')
             ->onClick[]=function(SubmitButton $button){
             $values=$this->getValues('array');

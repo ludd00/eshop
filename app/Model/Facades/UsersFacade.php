@@ -65,6 +65,17 @@ class UsersFacade{
   }
 
   /**
+   * Metoda pro vyhledání uživatelů
+   * @param array|null $params = null
+   * @param int $offset = null
+   * @param int $limit = null
+   * @return User[]
+   */
+  public function findUsers(array $params=null,int $offset=null,int $limit=null):array {
+    return $this->userRepository->findAllBy($params,$offset,$limit);
+  }
+
+  /**
    * Metoda pro uložení uživatele
    * @param User &$user
    * @return bool
