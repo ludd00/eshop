@@ -1,13 +1,21 @@
 {varType App\Model\Entities\Product[] $products}
+{varType App\Model\Entities\Category $category}
 {block content}
 
-<h1 n:block="title">Nabízené produkty</h1>
+<h1 n:block="title">{if !empty($category)}{$category->title}{else}Nabízené produkty{/if}</h1>
 
 <section class="row" n:if="!empty($products)">
     {foreach $products as $product}
         <div class="col-md-6 col-lg-4 my-2 card">
-            <a href="{plink Product:show url=>$product->url}" class="h4">{$product->title}</a>
-            {control "productCartForm-$product->productId"}
+            <div class="card-body">
+                <a href="{plink Product:show url=>$product->url}"><img height="auto" width="100%" src="{plink Product:photo, id=>$product->productId}" /></a>
+            </div>
+            <div class="card-body">
+                <a class="h5" href="{plink Product:show url=>$product->url}">{$product->title}</a>
+            </div>
+            <div>
+                {control "productCartForm-$product->productId"}
+            </div>
         </div>
     {/foreach}
 </section>

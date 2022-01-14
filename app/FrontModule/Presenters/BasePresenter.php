@@ -8,6 +8,8 @@ use App\FrontModule\Components\UserLoginControl\UserLoginControl;
 use App\FrontModule\Components\UserLoginControl\UserLoginControlFactory;
 use App\FrontModule\Components\UserRegisterControl\UserRegisterControl;
 use App\FrontModule\Components\UserRegisterControl\UserRegisterControlFactory;
+use App\FrontModule\Components\NavbarControl\NavbarControl;
+use App\FrontModule\Components\NavbarControl\NavbarControlFactory;
 use Nette\Application\AbortException;
 use Nette\Application\ForbiddenRequestException;
 
@@ -18,11 +20,12 @@ use Nette\Application\ForbiddenRequestException;
 abstract class BasePresenter extends \Nette\Application\UI\Presenter {
   /** @var UserLoginControlFactory $userLoginControlFactory */
   private $userLoginControlFactory;
-
   /** @var UserRegisterControlFactory $userRegisterControlFactory */
   private $userRegisterControlFactory;
   /** @var CartControlFactory $cartControlFactory*/
   private $cartControlFactory;
+  /** @var NavbarControlFactory $navbarControlFactory*/
+  private $navbarControlFactory;
 
     /**
    * @throws ForbiddenRequestException
@@ -42,6 +45,14 @@ abstract class BasePresenter extends \Nette\Application\UI\Presenter {
         $this->redirect('User:login', ['backlink' => $this->storeRequest()]);
       }
     }
+  }
+
+  /**
+   * Komponenta pro navbar
+   * @return NavbarControl
+   */
+  public function createComponentNavbar():NavbarControl {
+    return $this->navbarControlFactory->create();
   }
 
   /**
@@ -84,5 +95,9 @@ abstract class BasePresenter extends \Nette\Application\UI\Presenter {
   public function injectCartControlFactory(CartControlFactory $cartControlFactory):void {
     $this->cartControlFactory=$cartControlFactory;
   }
+  public function injectNavbarControlFactory(NavbarControlFactory $navbarControlFactory):void {
+    $this->navbarControlFactory=$navbarControlFactory;
+  }
+
   #endregion injections
 }

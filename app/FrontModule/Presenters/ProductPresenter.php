@@ -3,6 +3,7 @@
 namespace App\FrontModule\Presenters;
 
 use App\FrontModule\Components\ProductCartForm\ProductCartFormFactory;
+use App\Model\Facades\CategoriesFacade;
 use App\Model\Facades\ProductsFacade;
 use Nette\Application\BadRequestException;
 use Nette\Utils\Image;
@@ -18,6 +19,8 @@ use Nette\Application\UI\Multiplier;
 class ProductPresenter extends BasePresenter{
   /** @var ProductsFacade $productsFacade */
   private $productsFacade;
+  /** @var CategoriesFacade $categoriesFacade */
+  private $categoriesFacade;
   /** @var ProductCartFormFactory $productCartFormFactory */
   private $productCartFormFactory;
 
@@ -42,9 +45,13 @@ class ProductPresenter extends BasePresenter{
   /**
    * Akce pro vykreslení přehledu produktů
    */
-  public function renderList():void {
-    //TODO tady by mělo přibýt filtrování podle kategorie, stránkování atp.
-    $this->template->products = $this->productsFacade->findProducts(['order'=>'title']);
+  public function renderList($categoryId):void {
+    if ($categoryId==null){
+      $this->template->products = $this->productsFacade->findProducts(['order'=>'title']);
+    }else {
+      $this->template->products = $this->productsFacade->findProductsByCategory($categoryId);
+      $this->template->category = $this->categoriesFacade->getCategory($categoryId);
+    }
   }
 
   public function actionPhoto($id) {
@@ -86,6 +93,10 @@ class ProductPresenter extends BasePresenter{
   #region injections
   public function injectProductsFacade(ProductsFacade $productsFacade):void {
     $this->productsFacade=$productsFacade;
+  }
+
+  public function injectCategoriesFacade(CategoriesFacade $categoriesFacade):void {
+    $this->categoriesFacade=$categoriesFacade;
   }
 
   public function injectProductCartFormFactory(ProductCartFormFactory $productCartFormFactory):void {
