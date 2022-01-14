@@ -15,7 +15,7 @@ ADMIN
 FRONT
 - [x] zobrazení zboží
 - [x] přidání zboží do košíku
-- [ ] filtrování podle kategorií
+- [x] filtrování podle kategorií
 - [ ] zobrazit zboží stejné série
 - [ ] hvězdičky
 - [ ] hezčí UI
