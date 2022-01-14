@@ -57,7 +57,6 @@ class UserEditForm extends Form{
     $this->addText('email','E-mail')
     ->setRequired('Musíte zadat e-mail');
 
-
     #region role
     $roles=$this->roleRepository->findAllBy();
     $rolesArr=[];
@@ -68,9 +67,6 @@ class UserEditForm extends Form{
       ->setPrompt('--vyberte roli--')
       ->setRequired(false);
     #endregion role
-
-
-
 
     $this->addSubmit('ok','uložit')
       ->onClick[]=function(SubmitButton $button){

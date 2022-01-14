@@ -2,7 +2,6 @@
 
 namespace App\AdminModule\Components\ProductEditForm;
 
-use App\Model\Entities\Category;
 use App\Model\Entities\Product;
 use App\Model\Facades\CategoriesFacade;
 use App\Model\Facades\ProductsFacade;
