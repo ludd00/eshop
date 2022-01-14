@@ -44,11 +44,8 @@ class ProductCartForm extends Form{
 
   private function createSubcomponents(){
     $this->addHidden('productId');
-    $this->addSubmit('ok','přidat do košíku')
-      ->onClick[]=function(SubmitButton $button){
-        //přidání zboží do košíku
-        //TODO
-      };
+    $this->addSubmit('ok','přidat do košíku');
+
   }
 
 }

@@ -77,7 +77,7 @@ class CartControl extends Control{
       $cartItem->product = $product;
     }
 
-    $cartItem->count += $count;
+    $cartItem->count += 1;
 
     $this->cartFacade->saveCartItem($cartItem);
     $this->cartFacade->saveCart($this->cart);
