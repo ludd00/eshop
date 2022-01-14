@@ -6,8 +6,15 @@
 <section class="row" n:if="!empty($products)">
     {foreach $products as $product}
         <div class="col-md-6 col-lg-4 my-2 card">
-            <a href="{plink Product:show url=>$product->url}" class="h4">{$product->title}</a>
-            {control "productCartForm-$product->productId"}
+            <div class="card-body">
+                <a href="{plink Product:show url=>$product->url}"><img height="auto" width="100%" src="{plink Product:photo, id=>$product->productId}" /></a>
+            </div>
+            <div class="card-body">
+                <a class="h5" href="{plink Product:show url=>$product->url}">{$product->title}</a>
+            </div>
+            <div>
+                {control "productCartForm-$product->productId"}
+            </div>
         </div>
     {/foreach}
 </section>
