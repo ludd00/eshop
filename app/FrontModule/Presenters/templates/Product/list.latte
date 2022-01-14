@@ -1,7 +1,8 @@
 {varType App\Model\Entities\Product[] $products}
+{varType App\Model\Entities\Category $category}
 {block content}
 
-<h1 n:block="title">Nabízené produkty</h1>
+<h1 n:block="title">{if !empty($category)}{$category->title}{else}Nabízené produkty{/if}</h1>
 
 <section class="row" n:if="!empty($products)">
     {foreach $products as $product}

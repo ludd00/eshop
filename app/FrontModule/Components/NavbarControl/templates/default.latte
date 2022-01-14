@@ -1,0 +1,9 @@
+{varType App\Model\Entities\Category[] $categories}
+{snippet}
+
+<ul class="nav nav=pills flex=column mn=auto">
+    {foreach $categories as $category}
+        <li><a class="nav-link line-dark" href="{plink Product:list, categoryId=>$category->categoryId}">{$category->title}</a></li>
+    {/foreach}
+</ul>
+{/snippet}
