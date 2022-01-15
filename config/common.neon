@@ -28,7 +28,7 @@ services:
 	- App\AdminModule\Components\CategoryEditForm\CategoryEditFormFactory
 	- App\AdminModule\Components\ProductEditForm\ProductEditFormFactory
 	- App\AdminModule\Components\UserEditForm\UserEditFormFactory
-
+	
 	- App\FrontModule\Components\CartControl\CartControlFactory
 	- App\FrontModule\Components\ProductCartForm\ProductCartFormFactory
 	- App\FrontModule\Components\NavbarControl\NavbarControlFactory
@@ -36,6 +36,10 @@ services:
 	- App\FrontModule\Components\UserRegistrationForm\UserRegistrationFormFactory
 	forgottenPasswordFormFactory:
 	    implement: App\FrontModule\Components\ForgottenPasswordForm\ForgottenPasswordFormFactory
+	    setup:
+	        - setMailFrom(%mailFrom.email%,%mailFrom.name%)
+	PasswordResetFormFactory:
+	    implement: App\AdminModule\Components\PasswordResetForm\PasswordResetFormFactory
 	    setup:
 	        - setMailFrom(%mailFrom.email%,%mailFrom.name%)
 	- App\FrontModule\Components\NewPasswordForm\NewPasswordFormFactory
