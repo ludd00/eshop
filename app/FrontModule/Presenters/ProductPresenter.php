@@ -5,6 +5,7 @@ namespace App\FrontModule\Presenters;
 use App\FrontModule\Components\ProductCartForm\ProductCartFormFactory;
 use App\Model\Facades\CategoriesFacade;
 use App\Model\Facades\ProductsFacade;
+use App\Model\Repositories\BrandRepository;
 use Nette\Application\BadRequestException;
 use Nette\Utils\Image;
 use App\FrontModule\Components\CartControl\CartControl;
@@ -23,9 +24,13 @@ class ProductPresenter extends BasePresenter{
   private $categoriesFacade;
   /** @var ProductCartFormFactory $productCartFormFactory */
   private $productCartFormFactory;
+  /** @var BrandRepository $brandRepository */
+  private $brandRepository;
 
   /** @persistent */
-  public $category;
+  public $category = null;
+  /** @persistent */
+  public $brand = null;
 
   /**
    * Akce pro zobrazení jednoho produktu
@@ -52,6 +57,21 @@ class ProductPresenter extends BasePresenter{
       $this->template->products = $this->productsFacade->findProductsByCategory($categoryId);
       $this->template->category = $this->categoriesFacade->getCategory($categoryId);
     }
+
+
+    $activeBrand = null;
+    if ($this->brand){
+      try {
+        $activeBrand=$this->brandRepository->getBrand($this->brand);
+      }catch (\Exception $e){
+        $this->redirect('list', ['brand'=>null]);
+      }
+    }
+    $this->template->activeBrand=$activeBrand;
+    $this->template->brands = $this->brandRepository->findAll();
+
+    //nacteni produktu
+    $this->template->products2 = $this->productsFacade->findProductsByBrand($activeBrand);
   }
 
   public function actionPhoto($id) {
@@ -102,5 +122,10 @@ class ProductPresenter extends BasePresenter{
   public function injectProductCartFormFactory(ProductCartFormFactory $productCartFormFactory):void {
     $this->productCartFormFactory=$productCartFormFactory;
   }
+
+  public function injectBrandRepository(BrandRepository $brandRepository):void {
+    $this->brandRepository=$brandRepository;
+  }
+
   #endregion injections
 }

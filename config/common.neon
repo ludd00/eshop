@@ -56,3 +56,4 @@ services:
 	- App\Model\Repositories\ProductRepository
 	- App\Model\Repositories\CartRepository
 	- App\Model\Repositories\CartItemRepository
+	- App\Model\Repositories\BrandRepository
