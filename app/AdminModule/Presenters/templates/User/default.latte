@@ -16,6 +16,7 @@
                 <td>{$user->email}</td>
                 <td class="text-nowrap">
                     <a href="{link edit id=>$user->userId}" class="btn btn-sm btn-outline-primary">upravit</a>
+                    <a href="{link passwordReset id=>$user->userId}" class="btn btn-sm btn-outline-primary">Reset hesla</a>
                     {if $user->blocked}
                         <a n:href="blockById! id=>$user->userId" class="btn btn-sm btn-outline-success">odblokovat</a>
                     {else}
