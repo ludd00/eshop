@@ -12,8 +12,10 @@
             </div>
             <div class="card-body">
                 <a class="h5" href="{plink Product:show url=>$product->url}">{$product->title}</a>
+                <p>{$product->price|number:2, ',', ' '} Kč</p>
+                <p n:if="$product->available==false">Zboží není dostupné</p>
             </div>
-            <div>
+            <div n:if="$product->available==true">
                 {control "productCartForm-$product->productId"}
             </div>
         </div>
