@@ -28,7 +28,7 @@ services:
 	- App\AdminModule\Components\CategoryEditForm\CategoryEditFormFactory
 	- App\AdminModule\Components\ProductEditForm\ProductEditFormFactory
 	- App\AdminModule\Components\UserEditForm\UserEditFormFactory
-	
+
 	- App\FrontModule\Components\CartControl\CartControlFactory
 	- App\FrontModule\Components\ProductCartForm\ProductCartFormFactory
 	- App\FrontModule\Components\NavbarControl\NavbarControlFactory
@@ -50,6 +50,7 @@ services:
 	- App\Model\Facades\UsersFacade
 	- App\Model\Facades\ProductsFacade
 	- App\Model\Facades\CartFacade
+	- App\Model\Facades\ShopOrdersFacade
 
 	- App\Model\Repositories\CategoryRepository
 	- App\Model\Repositories\ForgottenPasswordRepository
@@ -60,3 +61,5 @@ services:
 	- App\Model\Repositories\ProductRepository
 	- App\Model\Repositories\CartRepository
 	- App\Model\Repositories\CartItemRepository
+	- App\Model\Repositories\ShopOrderRepository
+	- App\Model\Repositories\OrderedProductRepository
