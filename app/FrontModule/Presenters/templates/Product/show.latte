@@ -1,8 +1,30 @@
 {varType App\Model\Entities\Product $product}
+{varType App\Model\Entities\Product[] $series}
 {block content}
 
 <h1 n:block="title">{$product->title}</h1>
 
-<p><img src="{plink Product:photo, id=>$product->productId}"/></p>
-<p>{$product->price|number:2, ',', ' '} Kč</p>
-<p>{$product->description}</p>
+<div>
+    <p class="text-center"><img src="{plink Product:photo, id=>$product->productId}"/></p>
+</div>
+<div class="row">
+    <p>{$product->price|number:2, ',', ' '} Kč</p>
+    <p n:if="$product->available==true">{control "productCartForm-$product->productId"}</p>
+</div>
+<div class="row">
+    <p>{$product->description}</p>
+</div>
+<section class="row">
+    {foreach $series as $seriesProduct}
+        <div class="col-md-6 col-lg-4 my-2 card">
+            <div class="card-body">
+                <a href="{plink Product:show url=>$seriesProduct->url}"><img height="auto" width="100%" src="{plink Product:photo, id=>$seriesProduct->productId}" /></a>
+            </div>
+            <div class="card-body">
+                <a class="h5" href="{plink Product:show url=>$seriesProduct->url}">{$seriesProduct->title}</a>
+                <p>{$seriesProduct->price|number:2, ',', ' '} Kč</p>
+                <p n:if="$seriesProduct->available==false">Zboží není dostupné</p>
+            </div>
+        </div>
+    {/foreach}
+</section>

@@ -63,6 +63,11 @@ class ProductsFacade{
     return $this->productRepository->findAllByCategoryAndBrand($categoryId, $brandId, $offset, $limit);
   }
 
+  public function findProductsInSeries(Product $product = null,int $offset=null,int $limit=null):array{
+    $productId = ($product ? $product->productId : null);
+    return $this->productRepository->findSeries($productId, $offset, $limit);
+}
+
   /**
    * Metoda pro zjištění počtu produktů
    * @param array|null $params
