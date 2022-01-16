@@ -50,6 +50,7 @@ services:
 	- App\Model\Facades\UsersFacade
 	- App\Model\Facades\ProductsFacade
 	- App\Model\Facades\CartFacade
+	- App\Model\Facades\BrandFacade
 
 	- App\Model\Repositories\CategoryRepository
 	- App\Model\Repositories\ForgottenPasswordRepository
@@ -60,3 +61,4 @@ services:
 	- App\Model\Repositories\ProductRepository
 	- App\Model\Repositories\CartRepository
 	- App\Model\Repositories\CartItemRepository
+	- App\Model\Repositories\BrandRepository

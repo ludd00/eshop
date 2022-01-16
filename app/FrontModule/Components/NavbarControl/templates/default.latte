@@ -1,9 +1,11 @@
 {varType App\Model\Entities\Category[] $categories}
 {snippet}
 
-<ul class="nav nav=pills flex=column mn=auto">
+<ul class="nav nav-tabs mn-2">
     {foreach $categories as $category}
-        <li><a class="nav-link line-dark" href="{plink Product:list, categoryId=>$category->categoryId}">{$category->title}</a></li>
+        <li class="nav-item">
+            <a n:class="$presenter->isLinkCurrent('Product:list', [category=>$category->categoryId])?active, nav-link" href="{plink Product:list category=>$category->categoryId}">{$category->title}</a>
+        </li>
     {/foreach}
 </ul>
 {/snippet}

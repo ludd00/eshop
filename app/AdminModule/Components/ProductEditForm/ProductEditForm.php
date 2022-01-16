@@ -89,8 +89,7 @@ class ProductEditForm extends Form{
             ->addRule(Form::NUMERIC)
             ->setRequired('Musíte zadat cenu produktu');//tady by mohly být další kontroly pro min, max atp.
 
-        $this->addCheckbox('available', 'Nabízeno ke koupi')
-            ->setDefaultValue(true);
+        $this->addCheckbox('available', 'Nabízeno ke koupi');
 
         #region obrázek
         $photoUpload=$this->addUpload('photo','Fotka produktu');
@@ -165,7 +164,8 @@ class ProductEditForm extends Form{
                 'title'=>$values->title,
                 'url'=>$values->url,
                 'description'=>$values->description,
-                'price'=>$values->price
+                'price'=>$values->price,
+                'available'=>$values->available
             ];
         }
         parent::setDefaults($values, $erase);

@@ -1,19 +1,39 @@
 {varType App\Model\Entities\Product[] $products}
-{varType App\Model\Entities\Category $category}
+{varType App\Model\Entities\Category|null $activeCategory}
+{varType App\Model\Entities\Brand[] $brands}
+{varType App\Model\Entities\Brand|null $activeBrand}
 {block content}
 
-<h1 n:block="title">{if !empty($category)}{$category->title}{else}Nabízené produkty{/if}</h1>
-
+<h1 n:block="title">{if $activeCategory}{$activeCategory->title}{else}Nabízené produkty{/if}</h1>
+<section class="row">
+    {if !empty($brands)}
+        <div style="width: 100%;">
+            <ul class="nav nav-tabs mb-2">
+                <li class="nav-item">
+                    <a class="nav-link {if !$activeBrand}active{/if}" href="{plink list brand=>null}">Všichni</a>
+                </li>
+                {foreach $brands as $brand}
+                    <li class="nav-item">
+                        <a class="nav-link {if $activeBrand && ($brand->brandId==$activeBrand->brandId)}active{/if}" href="{plink list brand=>$brand->brandId}">{$brand->name}</a>
+                    </li>
+                {/foreach}
+            </ul>
+        </div>
+    {/if}
+</section>
 <section class="row" n:if="!empty($products)">
     {foreach $products as $product}
+        {if $product->productId}{/if}
         <div class="col-md-6 col-lg-4 my-2 card">
             <div class="card-body">
                 <a href="{plink Product:show url=>$product->url}"><img height="auto" width="100%" src="{plink Product:photo, id=>$product->productId}" /></a>
             </div>
             <div class="card-body">
                 <a class="h5" href="{plink Product:show url=>$product->url}">{$product->title}</a>
+                <p>{$product->price|number:2, ',', ' '} Kč</p>
+                <p n:if="$product->available==false">Zboží není dostupné</p>
             </div>
-            <div>
+            <div n:if="$product->available==true">
                 {control "productCartForm-$product->productId"}
             </div>
         </div>
