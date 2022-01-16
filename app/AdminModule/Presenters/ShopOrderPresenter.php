@@ -30,7 +30,7 @@ class ShopOrderPresenter extends BasePresenter
     }
 
     /**
-     * Akce pro vykreslení seznamu objednávek
+     * Akce pro vykreslení jedné objednávky
      * @throws \Exception
      */
     public function renderDetail(int $id):void {

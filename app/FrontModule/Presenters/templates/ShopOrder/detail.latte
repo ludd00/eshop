@@ -1,0 +1,79 @@
+{varType App\Model\Entities\ShopOrder $shopOrder}
+{block content}
+
+<h1 n:block="title">Objednávka č. {$shopOrder->shopOrderId}</h1>
+
+<div>
+    <p><strong>Jméno: </strong>{$shopOrder->user->name}</p>
+    <p><strong>Adresa: </strong>{$shopOrder->address}</p>
+    <p><strong>Fakturační adresa: </strong>
+        {if empty($shopOrder->billingAddress)}
+            -
+        {else}
+            {$shopOrder->billingAddress}
+        {/if}
+    </p>
+    <p><strong>Stav: </strong>{$shopOrder->status}</p>
+    <p><strong>Odesláno: </strong>
+        {if !empty($shopOrder->dateSent)}
+            {$shopOrder->dateSent|date:('d. m. Y')}
+        {else}
+            -
+        {/if}
+    </p>
+    <p><strong>Doručeno: </strong>
+        {if is_null($shopOrder->dateDelivered)}
+           -
+        {else}
+            {$shopOrder->dateDelivered|date:('d. m. Y')}
+        {/if}
+
+    </p>
+
+    <p><strong>Zaplaceno: </strong>
+        {if ($shopOrder->paid)}
+            Ano
+        {else}
+            Ne
+        {/if}
+    </p>
+
+    {if !empty($shopOrder->customerNote)}<p><strong>Poznámka: </strong>{$shopOrder->customerNote}</p>{/if}
+
+</div>
+<table class="table table-hover mt-4">
+    <thead>
+    <tr>
+        <th scope="col">Název</th>
+        <th scope="col">Jednotková cena</th>
+        <th scope="col">Počet</th>
+        <th scope="col">Cena za položku</th>
+    </tr>
+    </thead>
+    <tbody>
+    {foreach $shopOrder->orderedProducts as $orderedProduct}
+        <tr>
+            <td>
+                {$orderedProduct->product->title}
+            </td>
+            <td>
+                {$orderedProduct->unitPrice|number:0,',',' '},- Kč
+            </td>
+            <td>
+                {$orderedProduct->count} ks
+            </td>
+            <td>
+                {=$orderedProduct->count * $orderedProduct->unitPrice|number:0,',',' '},- Kč
+            </td>
+        </tr>
+    {/foreach}
+
+    <tr>
+            <td></td>
+            <td></td>
+            <td scope="col"><strong>Celkem:</strong></td>
+            <td><strong>{$shopOrder->price|number:0,',',' '},- Kč</strong></td>
+            </tr>
+{*    {=var_dump($shopOrder->orderedProducts)}*}
+    </tbody>
+</table>

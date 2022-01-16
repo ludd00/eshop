@@ -39,6 +39,16 @@ class ShopOrdersFacade
         return $this->shopOrderRepository->find($id);
     }
 
+    /**
+     * Metoda pro získání objednávek pomocí id uživatele
+     * @param int $userId
+     * @return ShopOrder
+     * @throws \Exception
+     */
+    public function findShopOrdersByUser(int $userId) {
+        return $this->shopOrderRepository->findAllBy(['user_id'=>$userId]);
+    }
+
     public function saveShopOrder(ShopOrder &$shopOrder){
         return (bool)$this->shopOrderRepository->persist($shopOrder);
     }
