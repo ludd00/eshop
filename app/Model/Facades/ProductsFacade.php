@@ -2,6 +2,8 @@
 
 namespace App\Model\Facades;
 
+use App\Model\Entities\Brand;
+use App\Model\Entities\Category;
 use App\Model\Entities\Product;
 use App\Model\Repositories\ProductRepository;
 use Nette\Http\FileUpload;
@@ -46,17 +48,20 @@ class ProductsFacade{
     return $this->productRepository->findAllBy($params,$offset,$limit);
   }
 
+
   /**
-   * Metoda pro vyhledání produktů
-   * @param array|null $params = null
+   * Metoda pro vyhledání produktů podle parametru
+   * @param Category $category = null
+   * @param Brand $brand = null
    * @param int $offset = null
    * @param int $limit = null
    * @return Product[]
    */
-  public function findProductsByCategory(int $params=null,int $offset=null,int $limit=null):array {
-    return $this->productRepository->findByCategory($params,$offset,$limit);
+  public function findProductsBy(Category $category = null, Brand $brand = null,int $offset=null,int $limit=null):array {
+    $categoryId = ($category ? $category->categoryId : null);
+    $brandId = ($brand ? $brand->brandId : null);
+    return $this->productRepository->findAllByCategoryAndBrand($categoryId, $brandId, $offset, $limit);
   }
-
 
   /**
    * Metoda pro zjištění počtu produktů

@@ -8,7 +8,7 @@ use Nette\Application\UI\Template;
 
 /**
  * Class NavbarControl
- * @package App\FrontModule\Components\UserLoginControl
+ * @package App\FrontModule\Components\NavbarControl
  */
 class NavbarControl extends Control{
   /** @var CategoriesFacade $categoriesFacade */

@@ -3,7 +3,6 @@
 
 <h1 n:block="title">{$product->title}</h1>
 
-<p>
-    {$product->description}
-    <img src="{plink Product:photo, id=>$product->productId}" />
-</p>
+<p><img src="{plink Product:photo, id=>$product->productId}"/></p>
+<p>{$product->price|number:2, ',', ' '} Kč</p>
+<p>{$product->description}</p>
