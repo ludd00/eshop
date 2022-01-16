@@ -45,6 +45,7 @@ class ProductPresenter extends BasePresenter{
     }
 
     $this->template->product = $product;
+    $this->template->series = $this->productsFacade->findProductsInSeries($product);
   }
 
   /**

@@ -65,3 +65,4 @@ services:
 	- App\Model\Repositories\ShopOrderRepository
 	- App\Model\Repositories\OrderedProductRepository
 	- App\Model\Repositories\BrandRepository
+	- App\Model\Repositories\SeriesRepository
