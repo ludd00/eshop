@@ -14,6 +14,7 @@
         {/if}
     </p>
     <p><strong>Stav: </strong>{$shopOrder->status}</p>
+    <p><strong>Odesláno: </strong>{$shopOrder->dateSent|date:('d. m. Y')}</p>
 </div>
 <table class="table table-hover mt-4">
     <thead>
@@ -35,13 +36,13 @@
                     {$orderedProduct->product->title}
                 </td>
                 <td>
-                    {$orderedProduct->unitPrice}
+                    {$orderedProduct->unitPrice|number:0,',',' '},- Kč
                 </td>
                 <td>
-                    {$orderedProduct->count}
+                    {$orderedProduct->count} ks
                 </td>
                 <td>
-                    {=$orderedProduct->count * $orderedProduct->unitPrice}
+                    {=$orderedProduct->count * $orderedProduct->unitPrice|number:0,',',' '},- Kč
                 </td>
             </tr>
         {/foreach}
@@ -49,8 +50,8 @@
                <td> </td>
                <td> </td>
                <td> </td>
-               <td scope="col">Celkem</td>
-               <td>{$shopOrder->price}</td>
+               <td scope="col"><strong>Celkem: </strong></td>
+               <td><strong>{$shopOrder->price|number:0,',',' '},- Kč</strong></td>
             </tr>
 {*    {=var_dump($shopOrder->orderedProducts)}*}
     </tbody>

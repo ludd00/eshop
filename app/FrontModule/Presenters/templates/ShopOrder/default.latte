@@ -1,0 +1,49 @@
+{varType App\Model\Entities\ShopOrder[] $shopOrders}
+{block content}
+
+<h1 n:block="title">Mé objednávky</h1>
+{if !empty($shopOrders)}
+    <table class="table table-hover mt-4">
+        <thead>
+        <tr>
+            <th scope="col">Číslo objednávky</th>
+            <th scope="col">Produkty</th>
+            <th scope="col">Stav</th>
+            <th scope="col">Celková cena</th>
+            <th scope="col" class="col-xl-1 col-md-2">Akce</th>
+        </tr>
+        </thead>
+        <tbody>
+        {foreach $shopOrders as $shopOrder}
+            <tr>
+                <td>{$shopOrder->shopOrderId}</td>
+
+                <td>
+                    {foreach $shopOrder->orderedProducts as $orderedProduct}
+                        {if strlen($orderedProduct->product->title) > 40}{=substr($orderedProduct->product->title, 0, 40)}...{else}{$orderedProduct->product->title}{/if} ({$orderedProduct->count}x)<br>
+                    {/foreach}
+                </td>
+
+                <td>
+                    {$shopOrder->status}
+                </td>
+                <td>{$shopOrder->price|number:0,',',' '},- Kč</td>
+
+                <td class="text-nowrap">
+                    <a href="{link detail id=>$shopOrder->shopOrderId}"
+                       class="btn btn-sm btn-outline-primary">Zobrazit</a>
+                    {if $shopOrder->status == 'confirmed' && !$shopOrder->paid}
+                        <a href="{link pay! id=>$shopOrder->shopOrderId}" n:class="btn, btn-sm, btn-outline-success">Zaplatit</a>
+                    {/if}
+                            {if $shopOrder->status !== 'canceled' && $shopOrder->status !== 'delivered'}
+                        <a href="{link cancel! id=>$shopOrder->shopOrderId}" n:class="btn, btn-sm, btn-outline-danger">Stornovat</a>
+                    {/if}
+                </td>
+            </tr>
+        {/foreach}
+        </tbody>
+    </table>
+
+{else}
+    <p class="text-muted">Nebyly nalezeny žádné objednávky</p>
+{/if}
