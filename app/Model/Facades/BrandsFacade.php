@@ -6,10 +6,10 @@ use App\Model\Entities\Brand;
 use App\Model\Repositories\BrandRepository;
 
 /**
- * Class BrandFacade - fasáda pro využívání vyrobcu z presenterů
+ * Class BrandsFacade - fasáda pro využívání vyrobcu z presenterů
  * @package App\Model\Facades
  */
-class BrandFacade
+class BrandsFacade
 {
   /** @var BrandRepository $brandRepository */
   private /*$brandRepository*/
@@ -35,7 +35,7 @@ class BrandFacade
    * @param array|null $params
    * @param int|null $offset
    * @param int|null $limit
-   * @return array
+   * @return Brand[]
    */
   public function findBrands(array $params=null,int $offset=null,int $limit=null):array {
     return $this->brandRepository->findAllBy($params,$offset,$limit);

@@ -8,7 +8,7 @@ use App\Model\Facades\CategoriesFacade;
 use App\Model\Facades\ProductsFacade;
 use App\Model\Facades\ProductRatingFacade;
 use App\Model\Facades\RatingFacade;
-use App\Model\Facades\BrandFacade;
+use App\Model\Facades\BrandsFacade;
 use App\Model\Repositories\RatingRepository;
 use Nette\Application\BadRequestException;
 use Nette\Utils\Image;
@@ -28,7 +28,7 @@ class ProductPresenter extends BasePresenter{
   private $categoriesFacade;
   /** @var ProductCartFormFactory $productCartFormFactory */
   private $productCartFormFactory;
-  /** @var BrandFacade $brandFacade */
+  /** @var BrandsFacade $brandFacade */
   private $brandFacade;
   /** @var ProductRatingFacade $productRatingFacade */
   private $productRatingFacade;
@@ -158,7 +158,7 @@ class ProductPresenter extends BasePresenter{
     $this->productCartFormFactory=$productCartFormFactory;
   }
 
-  public function injectBrandFacade(BrandFacade $brandFacade):void {
+  public function injectBrandFacade(BrandsFacade $brandFacade):void {
     $this->brandFacade=$brandFacade;
   }
 
