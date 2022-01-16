@@ -23,7 +23,12 @@
 		<div class="container">
 			<h1 class="h2 mt-1 "><a href="{plink Homepage:default}" class="text-dark">E-shop</a></h1>
 			{control navbar}
-			<div class="ml-auto d-flex flex-row">{control userLogin}<div class="pl-4">{control userRegister}</div><div class="pl-4">{control cart}</div></div>
+			<div class="ml-auto d-flex flex-row">
+				<div class="pl-4 mr-4" n:if="$user->isAllowed('Admin:Dashboard')"><a n:href=":Admin:Dashboard:default">Admin</a></div>
+				{control userLogin}
+				<div class="pl-4">{control userRegister}</div>
+				<div class="pl-4">{control cart}</div>
+			</div>
 		</div>
 	</header>
 	<div class="container">
