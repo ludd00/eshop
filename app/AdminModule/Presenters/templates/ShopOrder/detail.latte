@@ -1,0 +1,61 @@
+{varType App\Model\Entities\ShopOrder $shopOrder}
+{block content}
+
+<h1 n:block="title">Objednávka č. {$shopOrder->shopOrderId}</h1>
+
+<div>
+    <p><strong>Jméno: </strong>{$shopOrder->user->name}</p>
+    <p><strong>Adresa: </strong>{$shopOrder->address}</p>
+    <p><strong>Fakturační adresa: </strong>
+        {if empty($shopOrder->billingAddress)}
+            -
+        {else}
+            {$shopOrder->billingAddress}
+        {/if}
+    </p>
+    <p><strong>Stav: </strong>{$shopOrder->status}</p>
+</div>
+<table class="table table-hover mt-4">
+    <thead>
+        <tr>
+            <th scope="col">ID Produktu</th>
+            <th scope="col">Název</th>
+            <th scope="col">Jednotková cena</th>
+            <th scope="col">Počet</th>
+            <th scope="col">Cena za položku</th>
+        </tr>
+    </thead>
+    <tbody>
+       {foreach $shopOrder->orderedProducts as $orderedProduct}
+            <tr>
+                <td>
+                    {$orderedProduct->orderedProductId}
+                </td>
+                <td>
+                    {$orderedProduct->product->title}
+                </td>
+                <td>
+                    {$orderedProduct->unitPrice}
+                </td>
+                <td>
+                    {$orderedProduct->count}
+                </td>
+                <td>
+                    {=$orderedProduct->count * $orderedProduct->unitPrice}
+                </td>
+            </tr>
+        {/foreach}
+            <tr>
+               <td> </td>
+               <td> </td>
+               <td> </td>
+               <td scope="col">Celkem</td>
+               <td>{$shopOrder->price}</td>
+            </tr>
+{*    {=var_dump($shopOrder->orderedProducts)}*}
+    </tbody>
+</table>
+
+<div>
+    <p><strong>Poznámka: </strong> {$shopOrder->adminNote}</p>
+</div>
