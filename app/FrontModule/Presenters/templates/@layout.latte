@@ -15,6 +15,41 @@
 	<link rel="icon" href="{$basePath}/img/favicon/favicon.svg" type="image/svg+xml" />
 	<link rel="manifest" href="{plink Homepage:manifest}" />
 
+	<style>
+		.star-wrapper {
+			direction: rtl;
+		}
+		.star-wrapper a {
+			font-size: 2em;
+			color: #ccc;
+			text-decoration: none;
+			transition: all 0.5s;
+			margin: 4px;
+		}
+		.star-wrapper a:hover {
+			color: gold;
+			transform: scale(3);
+		}
+		a ~ .s{
+			color: black;
+		}
+		.s1:hover ~ a {
+			color: gold;
+		}
+		.s2:hover ~ a {
+			color: gold;
+		}
+		.s3:hover ~ a {
+			color: gold;
+		}
+		.s4:hover ~ a {
+			color: gold;
+		}
+		.s5:hover ~ a {
+			color: gold;
+		}
+	</style>
+
 	{block head}{/block}
 </head>
 <body>

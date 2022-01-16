@@ -5,6 +5,7 @@ namespace App\Model\Facades;
 use App\Model\Entities\Brand;
 use App\Model\Entities\Category;
 use App\Model\Entities\Product;
+use App\Model\Repositories\ProductRatingRepository;
 use App\Model\Repositories\ProductRepository;
 use Nette\Http\FileUpload;
 use Nette\Utils\Strings;
@@ -16,6 +17,8 @@ use Nette\Utils\Strings;
 class ProductsFacade{
   /** @var ProductRepository $productRepository */
   private $productRepository;
+  /** @var ProductRatingRepository $productRatingRepository */
+  private $productRatingRepository;
 
   /**
    * Metoda pro získání jednoho produktu
@@ -129,8 +132,8 @@ class ProductsFacade{
     }
   }
 
-
-  public function __construct(ProductRepository $productRepository){
+  public function __construct(ProductRepository $productRepository, ProductRatingRepository $productRatingRepository){
     $this->productRepository=$productRepository;
+    $this->productRatingRepository = $productRatingRepository;
   }
 }
