@@ -21,7 +21,6 @@ class NavbarControl extends Control{
   public function render(){
     $template=$this->prepareTemplate('default');
     $template->categories=$this->categoriesFacade->findCategories();
-    $template->class=(!empty($params['class'])?$params['class']:'');
     $template->render();
   }
 

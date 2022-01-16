@@ -3,9 +3,13 @@
 namespace App\FrontModule\Presenters;
 
 use App\FrontModule\Components\ProductCartForm\ProductCartFormFactory;
+use App\Model\Entities\ProductRating;
 use App\Model\Facades\CategoriesFacade;
 use App\Model\Facades\ProductsFacade;
+use App\Model\Facades\ProductRatingFacade;
+use App\Model\Facades\RatingFacade;
 use App\Model\Facades\BrandFacade;
+use App\Model\Repositories\RatingRepository;
 use Nette\Application\BadRequestException;
 use Nette\Utils\Image;
 use App\FrontModule\Components\CartControl\CartControl;
@@ -26,6 +30,12 @@ class ProductPresenter extends BasePresenter{
   private $productCartFormFactory;
   /** @var BrandFacade $brandFacade */
   private $brandFacade;
+  /** @var ProductRatingFacade $productRatingFacade */
+  private $productRatingFacade;
+  /** @var RatingFacade $ratingFacade */
+  private $ratingFacade;
+  /** @var RatingRepository $ratingRepository */
+  private $ratingRepository;
 
   /** @persistent */
   public $category = null;
@@ -46,6 +56,7 @@ class ProductPresenter extends BasePresenter{
 
     $this->template->product = $product;
     $this->template->series = $this->productsFacade->findProductsInSeries($product);
+    $this->template->rating = $this->ratingFacade->findRating($product->productId);
   }
 
   /**
@@ -117,6 +128,22 @@ class ProductPresenter extends BasePresenter{
     });
   }
 
+  /**
+   * Akce pro nastavení odeslání hodnocení
+   * @param int $productId
+   */
+  public function handleRating(int $productId, float $stars){
+
+    $productRating = new ProductRating();
+    $productRating->productId = $productId;
+    $productRating->userId = $this->user->id;
+    $productRating->stars = $stars;
+    //ulozeni hodnoceni
+    $this->productRatingFacade->saveProductRating($productRating);
+    $this->ratingFacade->saveAvgRating($productId);
+    $this->redirect('this');
+  }
+
 
   #region injections
   public function injectProductsFacade(ProductsFacade $productsFacade):void {
@@ -133,6 +160,17 @@ class ProductPresenter extends BasePresenter{
 
   public function injectBrandFacade(BrandFacade $brandFacade):void {
     $this->brandFacade=$brandFacade;
+  }
+
+  public function injectProductRatingFacade(ProductRatingFacade $productRatingFacade):void {
+    $this->productRatingFacade=$productRatingFacade;
+  }
+
+  public function injectRatingRepository(RatingRepository $ratingRepository):void {
+    $this->ratingRepository=$ratingRepository;
+  }
+  public function injectRatingFacade(RatingFacade $ratingFacade):void {
+    $this->ratingFacade=$ratingFacade;
   }
 
   #endregion injections
