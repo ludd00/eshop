@@ -11,30 +11,21 @@ use App\Model\Entities\Product;
 class ProductRepository extends BaseRepository{
 
   /**
-   * Metoda pro vyhledání produktů podle kategorie
-   * @param int $categoryId = null
-   * @param int $offset = null
-   * @param int $limit = null
-   * @return array
-   */
-  public function findByCategory($categoryId=null,int $offset=null,int $limit=null):array {
-    $query = $this->connection->select('*')->from($this->getTable());
-
-    if ($categoryId){
-      $query->where('category_id=%i', $categoryId);
-    }
-
-    return $this->createEntities($query->fetchAll($offset, $limit));
-  }
-
-  /**
+   * @param int|null $categoryId
    * @param int|null $brandId
    * @param int|null $offset
    * @param int|null $limit
    * @return Product[]
+   * @throws \LeanMapper\Exception\InvalidStateException
    */
-  public function findAllByBrand(?int $brandId = null, ?int $offset = null, ?int $limit = null):array{
+  public function findAllByCategoryAndBrand(?int $categoryId = null,?int $brandId = null, ?int $offset = null, ?int $limit = null):array{
     $query = $this->connection->select('*')->from($this->getTable());
+
+    #region filtrovani podle kategorie
+    if ($categoryId){
+      $query->where('category_id=%i', $categoryId);
+    }
+    #endregion
 
     #region filtrovani podle vyrobce
     if ($brandId){
@@ -42,8 +33,10 @@ class ProductRepository extends BaseRepository{
     }
     #endregion
 
+
     //vytvoření entit
     return $this->createEntities($query->fetchAll($offset, $limit));
   }
+
 
 }

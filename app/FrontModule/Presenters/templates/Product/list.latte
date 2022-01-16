@@ -1,12 +1,11 @@
-{varType App\Model\Entities\Product[] $products2}
-{varType App\Model\Entities\Category $category}
+{varType App\Model\Entities\Product[] $products}
+{varType App\Model\Entities\Category|null $activeCategory}
 {varType App\Model\Entities\Brand[] $brands}
 {varType App\Model\Entities\Brand|null $activeBrand}
 {block content}
 
-<h1 n:block="title">{if !empty($category)}{$category->title}{else}Nabízené produkty{/if}</h1>
-
-<section class="row" n:if="!empty($products2)">
+<h1 n:block="title">{if $activeCategory}{$activeCategory->title}{else}Nabízené produkty{/if}</h1>
+<section class="row">
     {if !empty($brands)}
         <div style="width: 100%;">
             <ul class="nav nav-tabs mb-2">
@@ -21,7 +20,9 @@
             </ul>
         </div>
     {/if}
-    {foreach $products2 as $product}
+</section>
+<section class="row" n:if="!empty($products)">
+    {foreach $products as $product}
         {if $product->productId}{/if}
         <div class="col-md-6 col-lg-4 my-2 card">
             <div class="card-body">
