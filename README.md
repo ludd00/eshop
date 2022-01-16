@@ -8,7 +8,7 @@ ADMIN
 - [x] správa uživatelů (zákadní)
 - [x] správa zboží (zákadní)
 - [x] správa kategorií (zákadní)
-- [ ] správa uživatelů - rozšířit (nějaký block...)
+- [x] správa uživatelů - rozšířit (nějaký block...)
 - [ ] správa zboží a kategorií - rozšířit (přidat ty série)
 - [x] správa objednávek (zobrazení, změna stavu)
 
@@ -17,6 +17,6 @@ FRONT
 - [x] přidání zboží do košíku
 - [x] filtrování podle kategorií
 - [x] zobrazit zboží stejné série
-- [ ] hvězdičky
+- [x] hvězdičky
 - [ ] hezčí UI
-- [ ] odeslání objednávky
+- [x] odeslání objednávky

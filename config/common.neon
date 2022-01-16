@@ -54,6 +54,8 @@ services:
 	- App\Model\Facades\ShopOrdersFacade
 	- App\Model\Facades\OrderedProductsFacade
 	- App\Model\Facades\BrandFacade
+	- App\Model\Facades\ProductRatingFacade
+	- App\Model\Facades\RatingFacade
 
 	- App\Model\Repositories\CategoryRepository
 	- App\Model\Repositories\ForgottenPasswordRepository
@@ -68,3 +70,5 @@ services:
 	- App\Model\Repositories\OrderedProductRepository
 	- App\Model\Repositories\BrandRepository
 	- App\Model\Repositories\SeriesRepository
+	- App\Model\Repositories\ProductRatingRepository
+	- App\Model\Repositories\RatingRepository
