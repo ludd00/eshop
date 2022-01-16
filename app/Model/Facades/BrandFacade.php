@@ -31,6 +31,12 @@ class BrandFacade
     return $this->brandRepository->find($id); //buď počítáme s možností vyhození výjimky, nebo ji ošetříme už tady a můžeme vracet např. null
   }
 
+  /**
+   * @param array|null $params
+   * @param int|null $offset
+   * @param int|null $limit
+   * @return array
+   */
   public function findBrands(array $params=null,int $offset=null,int $limit=null):array {
     return $this->brandRepository->findAllBy($params,$offset,$limit);
   }

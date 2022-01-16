@@ -33,6 +33,27 @@ class ProductRepository extends BaseRepository{
     }
     #endregion
 
+    //vytvoření entit
+    return $this->createEntities($query->fetchAll($offset, $limit));
+  }
+
+  /**
+   * @param int|null $seriesId
+   * @param int|null $offset
+   * @param int|null $limit
+   * @return Product[]
+   * @throws \LeanMapper\Exception\InvalidStateException
+   */
+  public function findSeries(?int $productId = null, ?int $offset = null, ?int $limit = null):array{
+    $query = $this->connection->select('*')->from($this->getTable());
+
+
+    #region filtrovani podle serie
+    if ($productId){
+      $query->where('product_id IN (SELECT product_id FROM product_series WHERE series_id IN (SELECT series_id FROM product_series WHERE product_id=%i))', $productId)
+            ->and('product_id NOT IN (SELECT product_id FROM product_series WHERE product_id=%i)', $productId);
+    }
+    #endregion
 
     //vytvoření entit
     return $this->createEntities($query->fetchAll($offset, $limit));
