@@ -5,7 +5,7 @@
         <ul class="navbar-nav mr-auto">
             {foreach $categories as $category}
                 <li n:class="$presenter->isLinkCurrent('Product:list', [category=>$category->categoryId])?active, nav-item">
-                    <a class="nav-link waves-effect waves-light" href="{plink Product:list category=>$category->categoryId}">{$category->title}</a>
+                    <a class="nav-link waves-effect waves-light" href="{plink Product:list category=>$category->categoryId, brand=>null}">{$category->title}</a>
                 </li>
             {/foreach}
         </ul>
