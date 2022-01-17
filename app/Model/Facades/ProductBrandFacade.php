@@ -2,6 +2,7 @@
 
 namespace App\Model\Facades;
 
+use App\Model\Entities\Product;
 use App\Model\Entities\ProductBrand;
 use App\Model\Repositories\BrandRepository;
 use App\Model\Repositories\ProductBrandRepository;
@@ -40,6 +41,28 @@ class ProductBrandFacade
    */
   public function saveProductBrand(ProductBrand &$productBrand){
     return (bool)$this->productBrandRepository->persist($productBrand);
+  }
+
+    /**
+     * Metoda pro uložení vyrobce produktu
+     */
+    public function saveNewProductBrand(ProductBrand &$productBrand, Product $product, int $brandId){
+        $productBrand->productId= $product->productId;
+        $productBrand->brandId = $brandId;
+        return (bool)$this->productBrandRepository->persist($productBrand);
+    }
+
+  /**
+   * Metoda pro smazání kategorie
+   * @param ProductBrand $productBrand
+   * @return bool
+   */
+  public function deleteProductBrand(ProductBrand $productBrand):bool {
+    try{
+      return (bool)$this->productBrandRepository->delete($productBrand);
+    }catch (\Exception $e){
+      return false;
+    }
   }
 
 

@@ -9,7 +9,7 @@ use LeanMapper\Entity;
  * @package App\Model\Entities
  * @property int $productBrandId
  * @property int $productId
- * @property int $brandId
+ * @property int|null $brandId
  */
 class ProductBrand extends Entity implements \Nette\Security\Resource{
 

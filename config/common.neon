@@ -28,6 +28,7 @@ services:
 	- App\AdminModule\Components\CategoryEditForm\CategoryEditFormFactory
 	- App\AdminModule\Components\ProductEditForm\ProductEditFormFactory
 	- App\AdminModule\Components\UserEditForm\UserEditFormFactory
+	- App\AdminModule\Components\BrandEditForm\BrandEditFormFactory
 
 	- App\FrontModule\Components\CartControl\CartControlFactory
 	- App\FrontModule\Components\ProductCartForm\ProductCartFormFactory

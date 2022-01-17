@@ -166,24 +166,32 @@ class ProductEditForm extends Form{
                 $product=new Product();
             }
 
-            if (!empty($values['brandId'])){
+            if (!empty($values['brandId'])&&!empty($values['productId'])){
               try {
                 $productBrand=$this->productBrandFacade->getProductBrand($values['productId']);
               }catch (\Exception $e){
-                $this->onFailed('Požadovaný výrobce nebyl nalezen.');
-                return;
+                $productBrand = new ProductBrand();
               }
+            }elseif (!empty($values['productId'])){
+              try {
+                $productBrand=$this->productBrandFacade->getProductBrand($values['productId']);
+                $this->productBrandFacade->deleteProductBrand($productBrand);
+              }catch (\Exception $e){}
             }else{
-              $productBrand = new ProductBrand;
+              $productBrand = new ProductBrand();
             }
 
-            if (!empty($values['seriesId'])){
+            if (!empty($values['seriesId'] &&!empty($values['productId']))){
               try {
                 $productSeries=$this->productSeriesFacade->getProductSeries($values['productId']);
               }catch (\Exception $e){
-                $this->onFailed('Požadovaná série nebyla nalezena.');
-                return;
+                $productSeries = new ProductSeries();
               }
+            }elseif (!empty($values['productId'])){
+              try {
+                $productSeries=$this->productSeriesFacade->getProductSeries($values['productId']);
+                $this->productSeriesFacade->deleteProductSeries($productSeries);
+              }catch (\Exception $e){}
             }else{
               $productSeries = new ProductSeries();
             }
@@ -192,12 +200,20 @@ class ProductEditForm extends Form{
             $product->price=floatval($values['price']);
             $product->category= $this->categoriesFacade->getCategory($values['categoryId']);
             $productBrand->productId= intval($values['productId']);
-            $productBrand->brandId = intval($values['brandId']);
+            $productBrand->brandId = $this->brandsFacade->getBrand($values['brandId'])->brandId;
             $productSeries->productId=intval($values['productId']);
-            $productSeries->seriesId=intval($values['seriesId']);
+            $productSeries->seriesId=$this->seriesFacade->getSeries($values['seriesId'])->seriesId;
             $this->productsFacade->saveProduct($product);
-            $this->productBrandFacade->saveProductBrand($productBrand);
-            $this->productSeriesFacade->saveProductSeries($productSeries);
+            if (empty($values['productId'])&&!empty($values['brandId'])){
+              $this->productBrandFacade->saveNewProductBrand($productBrand, $product, $values['brandId']);
+            }else{
+                $this->productBrandFacade->saveProductBrand($productBrand);
+            }
+            if (empty($values['productId'])&&!empty($values['seriesId'])){
+              $this->productSeriesFacade->saveNewProductSeries($productSeries, $product, $values['seriesId']);
+            }else{
+                $this->productSeriesFacade->saveProductSeries($productSeries);
+            }
             $this->setValues(['productId'=>$product->productId]);
 
             //uložení fotky
