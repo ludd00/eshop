@@ -18,5 +18,5 @@ FRONT
 - [x] filtrování podle kategorií
 - [x] zobrazit zboží stejné série
 - [x] hvězdičky
-- [ ] hezčí UI
+- [x] hezčí UI
 - [x] odeslání objednávky
