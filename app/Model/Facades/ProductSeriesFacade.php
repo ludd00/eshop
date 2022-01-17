@@ -2,6 +2,7 @@
 
 namespace App\Model\Facades;
 
+use App\Model\Entities\Product;
 use App\Model\Entities\ProductSeries;
 use App\Model\Repositories\SeriesRepository;
 use App\Model\Repositories\ProductSeriesRepository;
@@ -40,6 +41,28 @@ class ProductSeriesFacade
    */
   public function saveProductSeries(ProductSeries &$productSeries){
     return (bool)$this->productSeriesRepository->persist($productSeries);
+  }
+
+    /**
+     * Metoda pro uložení vyrobce produktu
+     */
+    public function saveNewProductSeries(ProductSeries &$productSeries, Product $product, int $seriesId){
+        $productSeries->productId= $product->productId;
+        $productSeries->seriesId = $seriesId;
+        return (bool)$this->productSeriesRepository->persist($productSeries);
+    }
+
+  /**
+   * Metoda pro smazání kategorie
+   * @param ProductSeries $productSeries
+   * @return bool
+   */
+  public function deleteProductSeries(ProductSeries $productSeries):bool {
+    try{
+      return (bool)$this->productSeriesRepository->delete($productSeries);
+    }catch (\Exception $e){
+      return false;
+    }
   }
 
 

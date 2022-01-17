@@ -24,12 +24,16 @@ class SeriesFacade
   /**
    * Metoda pro načtení jedné serie
    * @param int $id
-   * @return Series
-   * @throws \Exception
+   * @return Series|null
    */
-  public function getSeries(int $id):Series
+  public function getSeries(?int $id):?Series
   {
-    return $this->seriesRepository->find($id); //buď počítáme s možností vyhození výjimky, nebo ji ošetříme už tady a můžeme vracet např. null
+    try {
+      $series = $this->seriesRepository->find($id);
+    }catch (\Exception $e){
+      $series = null;
+    }
+    return $series;
   }
 
   /**

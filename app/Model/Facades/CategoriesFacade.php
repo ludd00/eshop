@@ -20,10 +20,10 @@ class CategoriesFacade{
   /**
    * Metoda pro načtení jedné kategorie
    * @param int $id
-   * @return Category
+   * @return Category|null
    * @throws \Exception
    */
-  public function getCategory(int $id):Category {
+  public function getCategory(int $id):?Category {
     return $this->categoryRepository->find($id); //buď počítáme s možností vyhození výjimky, nebo ji ošetříme už tady a můžeme vracet např. null
   }
 

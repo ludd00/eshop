@@ -21,14 +21,18 @@ class BrandsFacade
   }
 
   /**
-   * Metoda pro načtení jedné kategorie
+   * Metoda pro načtení jednoho vyrobce
    * @param int $id
-   * @return Brand
-   * @throws \Exception
+   * @return Brand|null
    */
-  public function getBrand(int $id): Brand
+  public function getBrand(?int $id):?Brand
   {
-    return $this->brandRepository->find($id); //buď počítáme s možností vyhození výjimky, nebo ji ošetříme už tady a můžeme vracet např. null
+    try {
+      $brand = $this->brandRepository->find($id);
+    } catch (\Exception $e) {
+      $brand = null;
+    }
+    return $brand;
   }
 
   /**
@@ -39,5 +43,27 @@ class BrandsFacade
    */
   public function findBrands(array $params=null,int $offset=null,int $limit=null):array {
     return $this->brandRepository->findAllBy($params,$offset,$limit);
+  }
+
+  /**
+   * Metoda pro uložení vyrobce
+   * @param Brand &$brand
+   * @return bool - true, pokud byly v DB provedeny nějaké změny
+   */
+  public function saveBrand(Brand &$brand):bool {
+    return (bool)$this->brandRepository->persist($brand);
+  }
+
+  /**
+   * Metoda pro smazání výrobce
+   * @param Brand $brand
+   * @return bool
+   */
+  public function deleteBrand(Brand $brand):bool {
+    try{
+      return (bool)$this->brandRepository->delete($brand);
+    }catch (\Exception $e){
+      return false;
+    }
   }
 }
