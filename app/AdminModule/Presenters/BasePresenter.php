@@ -22,9 +22,11 @@ abstract class BasePresenter extends \Nette\Application\UI\Presenter {
 
     if (!$this->user->isAllowed($presenterName,$action)){
       if ($this->user->isLoggedIn()){
-        throw new ForbiddenRequestException();
+        //throw new ForbiddenRequestException();
+          $this->flashMessage('Tento obsah nemůžete zobrazit jako přihlášený uživatel. . Nejprve je nutné se odhlásit a poté to zkusit znovu.','warning');
+          $this->redirect(':Front:Homepage:', ['backlink' => $this->storeRequest()]);
       }else{
-        $this->flashMessage('Pro zobrazení požadovaného obsahu se musíte přihlásit!','warning');
+        $this->flashMessage('Pro zobrazení požadovaného obsahu je nutné se přihlásit!','warning');
         //uložíme původní požadavek - předáme ho do persistentní proměnné v UserPresenteru
         $this->redirect(':Front:User:login', ['backlink' => $this->storeRequest()]);
       }
