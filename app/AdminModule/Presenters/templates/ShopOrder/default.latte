@@ -40,9 +40,20 @@
                         </td>
                         <td class="text-nowrap">
                             <a href="{link detail id=>$shopOrder->shopOrderId}" class="btn btn-sm btn-outline-primary">Zobrazit</a>
-                            <a href="{link sent! id=>$shopOrder->shopOrderId}" n:class="btn, btn-sm, empty($shopOrder->dateSent)?btn-outline-secondary, !empty($shopOrder->dateSent)?btn-outline-success">Odesláno</a>
+                            {if empty($shopOrder->dateSent)}
+                                <a href="{link sent! id=>$shopOrder->shopOrderId}" n:class="btn, btn-sm, btn-outline-success">Odesláno</a>
+                            {else}
+                                <a href="{link sent! id=>$shopOrder->shopOrderId}" n:class="btn, btn-sm, btn-outline-secondary">Zrušit odeslání</a>
+                            {/if}
                             {if !empty($shopOrder->dateSent)}
+{*
                                 <a href="{link delivered! id=>$shopOrder->shopOrderId}" n:class="btn, btn-sm, empty($shopOrder->dateDelivered)?btn-outline-secondary, !empty($shopOrder->dateDelivered)?btn-outline-success">Doručeno</a>
+*}
+                                {if empty($shopOrder->dateDelivered)}
+                                    <a href="{link delivered! id=>$shopOrder->shopOrderId}" n:class="btn, btn-sm, btn-outline-success">Doručeno</a>
+                                {else}
+                                    <a href="{link delivered! id=>$shopOrder->shopOrderId}" n:class="btn, btn-sm, btn-outline-secondary">Zrušit doručení</a>
+                                {/if}
                             {/if}
                         </td>
                     </tr>
