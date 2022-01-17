@@ -35,7 +35,7 @@
                     {if $shopOrder->status == 'confirmed' && !$shopOrder->paid}
                         <a href="{link pay! id=>$shopOrder->shopOrderId}" n:class="btn, btn-sm, btn-outline-success">Zaplatit</a>
                     {/if}
-                            {if $shopOrder->status !== 'canceled' && $shopOrder->status !== 'delivered'}
+                            {if $shopOrder->status !== 'canceled' && $shopOrder->status !== 'delivered' && $shopOrder->status !== 'sent'}
                         <a href="{link cancel! id=>$shopOrder->shopOrderId}" n:class="btn, btn-sm, btn-outline-danger">Stornovat</a>
                     {/if}
                 </td>

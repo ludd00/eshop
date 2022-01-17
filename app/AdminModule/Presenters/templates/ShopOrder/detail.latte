@@ -5,14 +5,22 @@
 
 <div>
     <p><strong>Jméno: </strong>{$shopOrder->user->name}</p>
-    <p><strong>Adresa: </strong>{$shopOrder->address}</p>
+    <p><strong>Adresa: </strong></p>
+    <div class="ml-4 mb-4">
+        <p>{$address->name}</p>
+        <p>{$address->street},</p>
+        <p>{$address->zipCode}, {$address->city}</p>
+    </div>
     <p><strong>Fakturační adresa: </strong>
         {if empty($shopOrder->billingAddress)}
-            -
+        -
         {else}
-            {$shopOrder->billingAddress}
-        {/if}
-    </p>
+    <div class="ml-4 mb-4">
+        <p>{$billingAddress->name}</p>
+        <p>{$billingAddress->street},</p>
+        <p>{$billingAddress->zipCode}, {$billingAddress->city}</p>
+    </div>
+    {/if}
     <p><strong>Stav: </strong>{$shopOrder->status}</p>
     <p><strong>Odesláno: </strong>{$shopOrder->dateSent|date:('d. m. Y')}</p>
 </div>

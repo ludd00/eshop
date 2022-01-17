@@ -42,6 +42,12 @@ class ShopOrderPresenter extends BasePresenter
         }
 
         $this->template->shopOrder=$shopOrder;
+
+        $address = json_decode($shopOrder->address);
+        $this->template->address =$address;
+
+        $billingAddress = json_decode($shopOrder->billingAddress);
+        $this->template->billingAddress =$billingAddress;
     }
 
     /**
