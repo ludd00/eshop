@@ -187,6 +187,7 @@ class UserPresenter extends BasePresenter{
    * Formulář pro obnovu zapomenutého hesla
    * @return ForgottenPasswordForm
    *
+   */
   protected function createComponentForgottenPasswordForm():ForgottenPasswordForm{
     $form=$this->forgottenPasswordFormFactory->create();
     $form->onFinished[]=function($message=''){

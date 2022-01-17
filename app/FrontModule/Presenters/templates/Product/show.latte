@@ -22,6 +22,9 @@
     <p n:if="$product->available==true">{control "productCartForm-$product->productId"}</p>
 </div>
 <div class="row">
+    <p n:if="$product->available==false">Zboží není dostupné</p>
+</div>
+<div class="row">
     <p>{$product->description}</p>
 </div>
 {if !empty($series)}
