@@ -9,7 +9,7 @@ ADMIN
 - [x] správa zboží (zákadní)
 - [x] správa kategorií (zákadní)
 - [x] správa uživatelů - rozšířit (nějaký block...)
-- [ ] správa zboží a kategorií - rozšířit (přidat ty série)
+- [x] správa zboží a kategorií - rozšířit (přidat ty série)
 - [x] správa objednávek (zobrazení, změna stavu)
 
 FRONT

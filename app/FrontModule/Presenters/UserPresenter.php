@@ -171,7 +171,7 @@ class UserPresenter extends BasePresenter{
       try{
         //po registraci uživatele rovnou i přihlásíme
         $this->user->login($values['email'],$values['password']);
-        $this->flashMessage('Vítejte v aplikaci nástěnky :)');
+        $this->flashMessage('Vítejte v eshopu :)');
       }catch (\Exception $e){
         $this->flashMessage('Při registraci se vyskytla chyba','error');
       }
@@ -186,7 +186,7 @@ class UserPresenter extends BasePresenter{
   /**
    * Formulář pro obnovu zapomenutého hesla
    * @return ForgottenPasswordForm
-   */
+   *
   protected function createComponentForgottenPasswordForm():ForgottenPasswordForm{
     $form=$this->forgottenPasswordFormFactory->create();
     $form->onFinished[]=function($message=''){
