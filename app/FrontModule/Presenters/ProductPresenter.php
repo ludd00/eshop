@@ -56,7 +56,7 @@ class ProductPresenter extends BasePresenter{
 
     $this->template->product = $product;
     $this->template->series = $this->productsFacade->findProductsInSeries($product);
-    $this->template->rating = $this->ratingFacade->findRating($product->productId);
+    $this->template->rating = $this->ratingFacade->getRating($product->productId);
   }
 
   /**
