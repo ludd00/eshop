@@ -1,10 +1,12 @@
 {snippet}
-  <div class="pl-4">
     {if $user->isLoggedIn()}
+  <div class="pl-4">
       <strong class="row"><a href="{plink ShopOrder:default}">{$user->identity->name}</a></strong>
       <span class="row"><a href="{link logout!}">Odhlásit se</a></span>
-    {else}
-      <a href="{link login!}">Přihlásit se</a>
-    {/if}
   </div>
+    {else}
+      <div class="pl-4 pt-2">
+        <a href="{link login!}">Přihlásit se</a>
+      </div>
+    {/if}
 {/snippet}
