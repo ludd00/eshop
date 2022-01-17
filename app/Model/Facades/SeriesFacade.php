@@ -45,4 +45,26 @@ class SeriesFacade
   public function findSeries(array $params=null,int $offset=null,int $limit=null):array {
     return $this->seriesRepository->findAllBy($params,$offset,$limit);
   }
+
+    /**
+     * Metoda pro uložení serie
+     * @param Series &$series
+     * @return bool - true, pokud byly v DB provedeny nějaké změny
+     */
+    public function saveSeries(Series &$series):bool {
+        return (bool)$this->seriesRepository->persist($series);
+    }
+
+    /**
+     * Metoda pro smazání serie
+     * @param Series &$series
+     * @return bool
+     */
+    public function deleteSeries(Series &$series):bool {
+        try{
+            return (bool)$this->seriesRepository->delete($series);
+        }catch (\Exception $e){
+            return false;
+        }
+    }
 }
