@@ -19,6 +19,7 @@ use Nette\Forms\Controls\SubmitButton;
 use Nette\SmartObject;
 use Nextras\FormsRendering\Renderers\Bs4FormRenderer;
 use Nextras\FormsRendering\Renderers\FormLayout;
+use Nette\Utils\Json;
 
 /**
  * Class ShopOrderCreateForm
@@ -71,12 +72,41 @@ class ShopOrderCreateForm extends Form
 
     private function createSubcomponents()
     {
-        $this->addText('address', 'Doručovací adresa:')
-            ->setRequired('Zadejte adresu pro doručení');
+        $this->addText('name', 'Jméno:')
+            ->setRequired('Zadejte jméno');
 
-        $this->addText('billingAddress', 'Fakturační adresa:');
+        $this->addText('street', 'Ulice + č. p.:')
+            ->setRequired('Zadejte ulici pro doručení');
 
-        $this->addText('customerNote', 'Poznámka:');
+        $this->addText('city', 'Město:')
+            ->setRequired('Zadejte město pro doručení');
+
+        $this->addText('zipCode', 'PSČ:')
+            ->setRequired('Zadejte PSČ');
+
+        $this->addTextArea('customerNote', 'Poznámka:');
+
+        $this->addCheckbox('addBillingAddress', 'Zadat fakturační adresu');
+
+        $this->addText('bFirm', 'Název firmy:')
+            ->addConditionOn($this['addBillingAddress'], $this::EQUAL, true)
+            ->setRequired('Zadejte název firmy');
+
+        $this->addText('bIco', 'IČO/DIČ:')
+            ->addConditionOn($this['addBillingAddress'], $this::EQUAL, true)
+            ->setRequired('Zadejte IČO');
+
+        $this->addText('bStreet', 'Ulice + č. p.:')
+            ->addConditionOn($this['addBillingAddress'], $this::EQUAL, true)
+            ->setRequired('Zadejte ulici v adrese pro fakturaci');
+
+        $this->addText('bCity', 'Město:')
+            ->addConditionOn($this['addBillingAddress'], $this::EQUAL, true)
+            ->setRequired('Zadejte město v adrese pro fakturaci');
+
+        $this->addText('bZipCode', 'PSČ:')
+            ->addConditionOn($this['addBillingAddress'], $this::EQUAL, true)
+            ->setRequired('Zadejte psč v adrese pro fakturaci');
 
 
         $this->addSubmit('confirm', 'Potvrdit objednávku')
@@ -84,8 +114,36 @@ class ShopOrderCreateForm extends Form
 
             $shopOrder = new ShopOrder();
             $shopOrder->user = $this->user;
-            $shopOrder->address = $this->values['address'];
-            $shopOrder->billingAddress = $this->values['billingAddress'];
+
+            $address = [
+                'name'=>$this->values['name'],
+                'street'=>$this->values['street'],
+                'city'=>$this->values['city'],
+                'zipCode'=>$this->values['zipCode']
+            ];
+
+            try {
+                $address = Json::encode($address, Json::PRETTY);
+            } catch (Nette\Utils\JsonException $e) {
+            }
+
+            if($this->values['addBillingAddress']){
+                $billingAddress = [
+                    'name'=>$this->values['bFirm'],
+                    'name'=>$this->values['bIco'],
+                    'street'=>$this->values['bStreet'],
+                    'city'=>$this->values['bCity'],
+                    'zipCode'=>$this->values['bZipCode']
+                ];
+
+                try {
+                    $billingAddress = Json::encode($billingAddress, Json::PRETTY);
+                } catch (Nette\Utils\JsonException $e) {
+                }
+            }
+
+            $shopOrder->address = $address;
+            $shopOrder->billingAddress = $billingAddress;
             $shopOrder->status = 'confirmed';
             $shopOrder->paid = false;
             $shopOrder->customerNote = $this->values['customerNote'];
