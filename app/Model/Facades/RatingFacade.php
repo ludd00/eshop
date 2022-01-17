@@ -28,14 +28,21 @@ class RatingFacade
   }
 
 
-  /**
-   * @param int $productId
-   * @return Rating
-   * @throws \Exception
-   */
-  public function findRating(int $productId):Rating{
-    return $this->ratingRepository->getRating($productId);
-  }
+
+    /**
+     * Metoda pro načtení jednoho hodnoceni
+     * @param int $id
+     * @return Rating|null
+     */
+    public function getRating(?int $id):?Rating
+    {
+        try {
+            $rating = $this->ratingRepository->findBy(['product_id'=>$id]);
+        }catch (\Exception $e){
+            $rating = null;
+        }
+        return $rating;
+    }
 
   /**
    * @param array|null $params
@@ -53,15 +60,28 @@ class RatingFacade
   public function saveAvgRating(int $productId){
     $avg = null;
     $count = null;
-    $ratingById = $this->findRating($productId);
-    $ratings = $this->productRatingRepository->findProductRatings($productId);
-    foreach ($ratings as $rating) {
-      $avg += $rating->stars;
-      $count += 1;
+    $rating = $this->getRating($productId);
+    if ($rating){
+        $produtcsRatings = $this->productRatingRepository->findProductRatings($productId);
+        foreach ($produtcsRatings as $produtcsRating) {
+            $avg += $produtcsRating->stars;
+            $count += 1;
+        }
+        $rating->avgStars = $avg/$count;
+        return (bool)$this->ratingRepository->persist($rating);
+    }else{
+        $rating = new Rating();
+        $produtcsRatings = $this->productRatingRepository->findAllBy(['product_id'=>$productId]);
+        foreach ($produtcsRatings as $produtcsRating) {
+            $avg += $produtcsRating->stars;
+            $count += 1;
+        }
+        $rating->productId = $productId;
+        $rating->avgStars = $avg/$count;
+        return (bool)$this->ratingRepository->persist($rating);
     }
-    $ratingById->avgStars = $avg/$count;
-    return (bool)$this->ratingRepository->persist($ratingById);
   }
+
 
 
 

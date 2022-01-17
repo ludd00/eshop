@@ -12,7 +12,7 @@
         <a class="{if $rating->avgStars>=1.5}s{/if} s2" n:href="Rating! productId=>$product->productId, stars=>2">&#9733;</a>
         <a class="{if $rating->avgStars>=0.5}s{/if} s1" n:href="Rating! productId=>$product->productId, stars=>1">&#9733;</a>
     </div>
-{*    <p>Průměrné hodnocení: {$rating->avgStars}</p>*}
+    <p>{$rating->avgStars}</p>
 </div>
 <div>
     <p class="text-center"><img alt="{$product->title}" src="{plink Product:photo, id=>$product->productId}"/></p>
@@ -24,7 +24,12 @@
 <div class="row">
     <p>{$product->description}</p>
 </div>
-<section class="row">
+{if !empty($series)}
+<section>
+    <div class="row">
+        <p class="h3">Další varianty produktu</p>
+    </div>
+    <div class="row">
     {foreach $series as $seriesProduct}
         <div class="col-md-6 col-lg-4 my-2 card">
             <div class="card-body">
@@ -37,4 +42,6 @@
             </div>
         </div>
     {/foreach}
+    </div>
 </section>
+{/if}

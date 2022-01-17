@@ -16,6 +16,7 @@
                         <td>{$product->title}</td>
                         <td class="text-nowrap">
                             <a href="{link edit id=>$product->productId}" class="btn btn-sm btn-outline-primary">upravit</a>
+                            <a href="{link delete id=>$product->productId}" class="btn btn-sm btn-outline-danger {if !$user->isAllowed($product,'delete')}disabled{/if}">smazat</a>
                         </td>
                     </tr>
                 {/foreach}

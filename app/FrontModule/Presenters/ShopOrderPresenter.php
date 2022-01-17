@@ -7,7 +7,7 @@ use App\FrontModule\Components\ShopOrderCreateForm\ShopOrderCreateForm;
 use App\FrontModule\Components\ShopOrderCreateForm\ShopOrderCreateFormFactory;
 use App\Model\Facades\CategoriesFacade;
 use App\Model\Facades\ProductsFacade;
-use App\Model\Facades\BrandFacade;
+use App\Model\Facades\BrandsFacade;
 use App\Model\Facades\ShopOrdersFacade;
 use Nette;
 use Nette\Application\BadRequestException;
@@ -32,7 +32,7 @@ class ShopOrderPresenter extends BasePresenter{
   private $productCartFormFactory;
     /** @var ShopOrderCreateFormFactory $shopOrderCreateFormFactory */
     private $shopOrderCreateFormFactory;
-  /** @var BrandFacade $brandFacade */
+  /** @var BrandsFacade $brandFacade */
   private $brandFacade;
   /** @var Security\User $user */
   private $user;
@@ -147,7 +147,7 @@ class ShopOrderPresenter extends BasePresenter{
         $this->shopOrderCreateFormFactory = $shopOrderCreateFormFactory;
   }
 
-  public function injectBrandFacade(BrandFacade $brandFacade):void {
+  public function injectBrandFacade(BrandsFacade $brandFacade):void {
     $this->brandFacade=$brandFacade;
   }
 

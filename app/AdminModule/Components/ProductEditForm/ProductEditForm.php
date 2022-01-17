@@ -3,8 +3,14 @@
 namespace App\AdminModule\Components\ProductEditForm;
 
 use App\Model\Entities\Product;
+use App\Model\Entities\ProductBrand;
+use App\Model\Entities\ProductSeries;
 use App\Model\Facades\CategoriesFacade;
 use App\Model\Facades\ProductsFacade;
+use App\Model\Facades\BrandsFacade;
+use App\Model\Facades\ProductBrandFacade;
+use App\Model\Facades\SeriesFacade;
+use App\Model\Facades\ProductSeriesFacade;
 use Nette;
 use Nette\Application\UI\Form;
 use Nette\Forms\Controls\SubmitButton;
@@ -34,6 +40,14 @@ class ProductEditForm extends Form{
     private $categoriesFacade;
     /** @var ProductsFacade $productsFacade */
     private $productsFacade;
+  /** @var BrandsFacade $brandsFacade */
+  private $brandsFacade;
+  /** @var ProductBrandFacade $productBrandFacade */
+  private $productBrandFacade;
+  /** @var SeriesFacade $seriesFacade */
+  private $seriesFacade;
+  /** @var ProductSeriesFacade $productSeriesFacade */
+  private $productSeriesFacade;
 
     /**
      * TagEditForm constructor.
@@ -42,11 +56,15 @@ class ProductEditForm extends Form{
      * @param ProductsFacade $productsFacade
      * @noinspection PhpOptionalBeforeRequiredParametersInspection
      */
-    public function __construct(Nette\ComponentModel\IContainer $parent = null, string $name = null, CategoriesFacade $categoriesFacade, ProductsFacade $productsFacade){
+    public function __construct(Nette\ComponentModel\IContainer $parent = null, string $name = null, CategoriesFacade $categoriesFacade, ProductsFacade $productsFacade, BrandsFacade  $brandsFacade,ProductBrandFacade $productBrandFacade,SeriesFacade $seriesFacade,ProductSeriesFacade $productSeriesFacade){
         parent::__construct($parent, $name);
         $this->setRenderer(new Bs4FormRenderer(FormLayout::VERTICAL));
         $this->categoriesFacade=$categoriesFacade;
         $this->productsFacade=$productsFacade;
+        $this->brandsFacade=$brandsFacade;
+        $this->productBrandFacade =$productBrandFacade;
+        $this->seriesFacade = $seriesFacade;
+        $this->productSeriesFacade=$productSeriesFacade;
         $this->createSubcomponents();
     }
 
@@ -81,6 +99,28 @@ class ProductEditForm extends Form{
             ->setRequired(false);
         #endregion kategorie
 
+        #region vyrobci
+        $brands=$this->brandsFacade->findBrands();
+        $brandsArr=[];
+        foreach ($brands as $brand){
+          $brandsArr[$brand->brandId]=$brand->name;
+        }
+        $this->addSelect('brandId','Výrobce',$brandsArr)
+          ->setPrompt('--vyberte výrobce--')
+          ->setRequired(false);
+        #endregion vyrobci
+
+        #region serie
+        $series=$this->seriesFacade->findSeries();
+        $seriesArr=[];
+        foreach ($series as $serie){
+          $seriesArr[$serie->seriesId]=$serie->name;
+        }
+        $this->addSelect('seriesId','Série',$seriesArr)
+          ->setPrompt('--vyberte sérii--')
+          ->setRequired(false);
+        #endregion serie
+
         $this->addTextArea('description', 'Popis produktu')
             ->setRequired('Zadejte popis produktu.');
 
@@ -95,8 +135,7 @@ class ProductEditForm extends Form{
         $photoUpload=$this->addUpload('photo','Fotka produktu');
         //pokud není zadané ID produktu, je nahrání fotky povinné
         $photoUpload //vyžadování nahrání souboru, pokud není známé productId
-        ->addConditionOn($productId, Form::EQUAL, '')
-            ->setRequired('Pro uložení nového produktu je nutné nahrát jeho fotku.');
+        ->addConditionOn($productId, Form::EQUAL, '');
 
         $photoUpload //limit pro velikost nahrávaného souboru
         ->addRule(Form::MAX_FILE_SIZE, 'Nahraný soubor je příliš velký', 1000000);
@@ -126,10 +165,55 @@ class ProductEditForm extends Form{
             }else{
                 $product=new Product();
             }
+
+            if (!empty($values['brandId'])&&!empty($values['productId'])){
+              try {
+                $productBrand=$this->productBrandFacade->getProductBrand($values['productId']);
+              }catch (\Exception $e){
+                $productBrand = new ProductBrand();
+              }
+            }elseif (!empty($values['productId'])){
+              try {
+                $productBrand=$this->productBrandFacade->getProductBrand($values['productId']);
+                $this->productBrandFacade->deleteProductBrand($productBrand);
+              }catch (\Exception $e){}
+            }else{
+              $productBrand = new ProductBrand();
+            }
+
+            if (!empty($values['seriesId'] &&!empty($values['productId']))){
+              try {
+                $productSeries=$this->productSeriesFacade->getProductSeries($values['productId']);
+              }catch (\Exception $e){
+                $productSeries = new ProductSeries();
+              }
+            }elseif (!empty($values['productId'])){
+              try {
+                $productSeries=$this->productSeriesFacade->getProductSeries($values['productId']);
+                $this->productSeriesFacade->deleteProductSeries($productSeries);
+              }catch (\Exception $e){}
+            }else{
+              $productSeries = new ProductSeries();
+            }
+
             $product->assign($values,['title','url','description','available']);
             $product->price=floatval($values['price']);
             $product->category= $this->categoriesFacade->getCategory($values['categoryId']);
+            $productBrand->productId= intval($values['productId']);
+            $productBrand->brandId = $this->brandsFacade->getBrand($values['brandId'])->brandId;
+            $productSeries->productId=intval($values['productId']);
+            $productSeries->seriesId=$this->seriesFacade->getSeries($values['seriesId'])->seriesId;
             $this->productsFacade->saveProduct($product);
+            if (empty($values['productId'])&&!empty($values['brandId'])){
+              $this->productBrandFacade->saveNewProductBrand($productBrand, $product, $values['brandId']);
+            }else{
+                $this->productBrandFacade->saveProductBrand($productBrand);
+            }
+            if (empty($values['productId'])&&!empty($values['seriesId'])){
+              $this->productSeriesFacade->saveNewProductSeries($productSeries, $product, $values['seriesId']);
+            }else{
+                $this->productSeriesFacade->saveProductSeries($productSeries);
+            }
             $this->setValues(['productId'=>$product->productId]);
 
             //uložení fotky
@@ -157,6 +241,18 @@ class ProductEditForm extends Form{
      * @return $this
      */
     public function setDefaults($values, bool $erase = false):self {
+
+      try {
+        $productBrand = $this->productBrandFacade->getProductBrand($values->productId);
+        $brand = $this->brandsFacade->getBrand($productBrand->brandId);
+      }catch (\Exception $e) {
+      }
+
+      try {
+        $productSeries = $this->productSeriesFacade->getProductSeries($values->productId);
+        $series = $this->seriesFacade->getSeries($productSeries->seriesId);
+      }catch (\Exception $e) {
+      }
         if ($values instanceof Product){
             $values = [
                 'productId'=>$values->productId,
@@ -165,7 +261,9 @@ class ProductEditForm extends Form{
                 'url'=>$values->url,
                 'description'=>$values->description,
                 'price'=>$values->price,
-                'available'=>$values->available
+                'available'=>$values->available,
+                'brandId'=>$brand->brandId,
+                'seriesId'=>$series->seriesId
             ];
         }
         parent::setDefaults($values, $erase);
