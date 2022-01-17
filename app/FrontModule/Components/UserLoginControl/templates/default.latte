@@ -1,9 +1,8 @@
 {snippet}
-  <div {if !empty($class)}class="{$class}"{/if}>
+  <div class="pl-4">
     {if $user->isLoggedIn()}
-      <strong>{$user->identity->name}</strong>
-      -
-      <a href="{link logout!}">Odhlásit se</a>
+      <strong class="row"><a href="{plink ShopOrder:default}">{$user->identity->name}</a></strong>
+      <span class="row"><a href="{link logout!}">Odhlásit se</a></span>
     {else}
       <a href="{link login!}">Přihlásit se</a>
     {/if}
