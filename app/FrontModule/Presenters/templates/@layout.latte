@@ -63,7 +63,7 @@
 			<div class="ml-auto d-flex flex-row">
 				<div>
 					<div class="pl-1 mr-1" n:if="$user->isAllowed('Admin:Dashboard')"><a n:href=":Admin:Dashboard:default">Admin</a></div>
-					<div class="mr-1" n:if="$user->isAllowed('Front:ShopOrder')"><a n:href="ShopOrder:default">Objednávky</a></div>
+					<div class="mr-4" n:if="$user->isAllowed('Front:ShopOrder')"><a n:href="ShopOrder:default">Objednávky</a></div>
 				</div>
 
 				{control userLogin}

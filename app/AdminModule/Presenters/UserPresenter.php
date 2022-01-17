@@ -7,6 +7,7 @@ use App\AdminModule\Components\PasswordResetForm\PasswordResetFormFactory;
 use App\AdminModule\Components\UserEditForm\UserEditForm;
 use App\AdminModule\Components\UserEditForm\UserEditFormFactory;
 use App\Model\Facades\UsersFacade;
+use App\Model\Repositories\RoleRepository;
 
 
 /**
@@ -21,6 +22,8 @@ class UserPresenter extends BasePresenter
     private $userEditFormFactory;
     /** @var PasswordResetFormFactory $passwordResetFormFactory */
     private $passwordResetFormFactory;
+    /** @var RoleRepository $roleRepository */
+    private $roleRepository;
 
     /**
      * Akce pro vykreslení seznamu uživatelů
@@ -44,14 +47,38 @@ class UserPresenter extends BasePresenter
         }
 
         if (!empty($user)) {
-            $user->blocked = !$user->blocked;
-            $this->usersFacade->saveUser($user);
             if ($user->blocked) {
-                $this->flashMessage("Uživatel '" . $user->name . "' byl zablokován. ");
-            } else {
+
+                try {
+                    $role = $this->roleRepository->getRole('authenticated');
+                } catch (\Exception $e) {
+                    $this->flashMessage('Role nebyla nalezena.', 'error');
+                    $this->redirect('default');
+                }
+
+                $user->role = $role;
+                $user->blocked = false;
+
                 $this->flashMessage("Uživatel '" . $user->name . "' byl odblokován. ");
             }
+            else {
+
+                try {
+                    $role = $this->roleRepository->getRole('blocked');
+                } catch (\Exception $e) {
+                    $this->flashMessage('Role nebyla nalezena.', 'error');
+                    $this->redirect('default');
+                }
+
+                $user->role = $role;
+                $user->blocked = true;
+
+                $this->flashMessage("Uživatel '" . $user->name . "' byl zablokován. ");
+            }
+
+            $this->usersFacade->saveUser($user);
             $this->redirect('default');
+
         } else {
             $this->flashMessage("Uživatel nebyl nalezen. ");
             $this->redirect('default');
@@ -159,6 +186,11 @@ class UserPresenter extends BasePresenter
     public function injectPasswordResetFormFactory(PasswordResetFormFactory $passwordResetFormFactory)
     {
         $this->passwordResetFormFactory = $passwordResetFormFactory;
+    }
+
+    public function injectRoleRepository(RoleRepository $roleRepository)
+    {
+        $this->roleRepository = $roleRepository;
     }
 
     #endregion injections
