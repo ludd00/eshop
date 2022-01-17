@@ -49,8 +49,32 @@ class ShopOrdersFacade
         return $this->shopOrderRepository->findAllBy(['user_id'=>$userId]);
     }
 
+    /**
+     * Metoda pro získání objednávek se statusem "paid"
+     * @return ShopOrder
+     * @throws \Exception
+     */
+    public function findPaidShopOrders()
+    {
+        return $this->shopOrderRepository->findAllBy(['status'=>'paid']);
+    }
+
+    /**
+     * Metoda pro získání objednávek se statusem "sent"
+     * @return ShopOrder
+     * @throws \Exception
+     */
+    public function findSentShopOrders()
+    {
+        return $this->shopOrderRepository->findAllBy(['status'=>'sent']);
+    }
+
     public function saveShopOrder(ShopOrder &$shopOrder){
         return (bool)$this->shopOrderRepository->persist($shopOrder);
+    }
+
+    public function findBy($whereArr){
+        return $this->shopOrderRepository->findBy($whereArr);
     }
 
     public function __construct(ShopOrderRepository $shopOrderRepository)

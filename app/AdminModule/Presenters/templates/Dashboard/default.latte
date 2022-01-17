@@ -1,2 +1,138 @@
+{varType App\Model\Entities\User $user}
+{varType App\Model\Entities\ShopOrder[] $paidShopOrders}
+{varType App\Model\Entities\ShopOrder[] $sentShopOrders}
+
 {block content}
-TODO tady bude nějaký obsah e-shopu :)
+<h1>Dobrý den, {$currentUser->name}!</h1>
+
+{if count($paidShopOrders) == 0 && count($sentShopOrders) == 0}
+    <p>Máte vše hotovo. </p>
+{else}
+    <p>
+        {if count($paidShopOrders) > 0}
+            V tuto chvíli
+            {if count($paidShopOrders) == 1}je zaplacena <strong>1 objednávka</strong> a je třeba ji odeslat.
+            {elseif count($paidShopOrders) < 5} jsou zaplaceny <strong>{count($paidShopOrders)} objednávky</strong> a je třeba je odeslat.
+            {else} je zaplaceno <strong>{count($paidShopOrders)} objednávek</strong> a je třeba je odeslat.
+            {/if}
+        {else}
+            V tuto chvíli nejsou žádné objednávky k odeslání.
+        {/if}
+    </p>
+    <p>
+        {if count($sentShopOrders) > 0}
+        Na cestě
+            {if count($sentShopOrders) == 1}je momentálně <strong>1 objednávka</strong>
+            {elseif count($SentShopOrders) < 5} jsou momentálně <strong>{count($sentShopOrders)} objednávky</strong>
+            {else} je momentálně <strong>{count($sentShopOrders)} objednávek</strong>
+            {/if} a je potřeba označit doručení.</p>
+        {else}
+        Na cestě nejsou žádné objednávky.
+        {/if}
+    </p>
+    <p>Můžete tak učinit <a href="{plink ShopOrder:default}">ve správě objednávek</a>, nebo v rychlé nabídce níže.</p>
+{/if}
+
+{if count($paidShopOrders) > 0}
+
+    <h2 class="mt-5">Zaplacené objednávky k odeslání</h2>
+    <table class="table table-hover mt-4">
+        <thead>
+        <tr>
+            <th scope="col">Číslo objednávky</th>
+            <th scope="col">Jméno zákazníka</th>
+            <th scope="col">Celková cena</th>
+            <th scope="col">Odesláno</th>
+            <th scope="col">Doručeno</th>
+            <th scope="col">Stav</th>
+            <th scope="col" class="col-xl-1 col-md-2">Akce</th>
+        </tr>
+        </thead>
+        <tbody>
+        {foreach $paidShopOrders as $shopOrder}
+            <tr>
+                <td>{$shopOrder->shopOrderId}</td>
+                <td>{$shopOrder->user->name}</td>
+                <td>{$shopOrder->price}</td>
+                <td>
+                    {if is_null($shopOrder->dateSent)}
+                        -
+                    {else}
+                        {$shopOrder->dateSent|date:'j. n. Y'}
+                    {/if}
+                </td>
+                <td>
+                    {if is_null($shopOrder->dateDelivered)}
+                        -
+                    {else}
+                        {$shopOrder->dateDelivered|date:'j. n. Y'}
+                    {/if}
+                </td>
+                <td>
+                    {$shopOrder->status}
+                </td>
+                <td class="text-nowrap">
+                    <a href="{link ShopOrder:detail id=>$shopOrder->shopOrderId}" class="btn btn-sm btn-outline-primary">Zobrazit</a>
+                    <a n:href="sent! id=>$shopOrder->shopOrderId" n:class="btn, btn-sm, empty($shopOrder->dateSent)?btn-outline-secondary, !empty($shopOrder->dateSent)?btn-outline-success">Odesláno</a>
+                    {if !empty($shopOrder->dateSent)}
+                        <a href="{link delivered! id=>$shopOrder->shopOrderId}" n:class="btn, btn-sm, empty($shopOrder->dateDelivered)?btn-outline-secondary, !empty($shopOrder->dateDelivered)?btn-outline-success">Doručeno</a>
+                    {/if}
+                </td>
+            </tr>
+        {/foreach}
+        </tbody>
+    </table>
+
+{/if}
+
+{if count($sentShopOrders) > 0}
+
+    <h2 class="mt-5">Odeslané objednávky</h2>
+    <table class="table table-hover mt-4">
+        <thead>
+        <tr>
+            <th scope="col">Číslo objednávky</th>
+            <th scope="col">Jméno zákazníka</th>
+            <th scope="col">Celková cena</th>
+            <th scope="col">Odesláno</th>
+            <th scope="col">Doručeno</th>
+            <th scope="col">Stav</th>
+            <th scope="col" class="col-xl-1 col-md-2">Akce</th>
+        </tr>
+        </thead>
+        <tbody>
+        {foreach $sentShopOrders as $shopOrder}
+            <tr>
+                <td>{$shopOrder->shopOrderId}</td>
+                <td>{$shopOrder->user->name}</td>
+                <td>{$shopOrder->price}</td>
+                <td>
+                    {if is_null($shopOrder->dateSent)}
+                        -
+                    {else}
+                        {$shopOrder->dateSent|date:'j. n. Y'}
+                    {/if}
+                </td>
+                <td>
+                    {if is_null($shopOrder->dateDelivered)}
+                        -
+                    {else}
+                        {$shopOrder->dateDelivered|date:'j. n. Y'}
+                    {/if}
+                </td>
+                <td>
+                    {$shopOrder->status}
+                </td>
+                <td class="text-nowrap">
+                    <a href="{link ShopOrder:detail id=>$shopOrder->shopOrderId}" class="btn btn-sm btn-outline-primary">Zobrazit</a>
+                    <a n:href="sent! id=>$shopOrder->shopOrderId" n:class="btn, btn-sm, empty($shopOrder->dateSent)?btn-outline-secondary, !empty($shopOrder->dateSent)?btn-outline-success">Odesláno</a>
+                    {if !empty($shopOrder->dateSent)}
+                        <a href="{link delivered! id=>$shopOrder->shopOrderId}" n:class="btn, btn-sm, empty($shopOrder->dateDelivered)?btn-outline-secondary, !empty($shopOrder->dateDelivered)?btn-outline-success">Doručeno</a>
+                    {/if}
+                </td>
+            </tr>
+        {/foreach}
+        </tbody>
+    </table>
+
+{/if}
