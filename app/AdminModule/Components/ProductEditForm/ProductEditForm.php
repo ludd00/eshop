@@ -206,12 +206,12 @@ class ProductEditForm extends Form{
             $this->productsFacade->saveProduct($product);
             if (empty($values['productId'])&&!empty($values['brandId'])){
               $this->productBrandFacade->saveNewProductBrand($productBrand, $product, $values['brandId']);
-            }else{
+            }elseif(!empty($values['brandId'])){
                 $this->productBrandFacade->saveProductBrand($productBrand);
             }
             if (empty($values['productId'])&&!empty($values['seriesId'])){
               $this->productSeriesFacade->saveNewProductSeries($productSeries, $product, $values['seriesId']);
-            }else{
+            }elseif (!empty($values['seriesId'])){
                 $this->productSeriesFacade->saveProductSeries($productSeries);
             }
             $this->setValues(['productId'=>$product->productId]);
