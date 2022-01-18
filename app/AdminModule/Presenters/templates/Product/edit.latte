@@ -4,3 +4,7 @@
 <h1 n:block="title">Úprava produktu {$product->title}</h1>
 
 {control productEditForm}
+
+<div n:if="$product->photoExtension">
+    <p class="text-center"><img alt="{$product->title}" src="{plink Product:photo, id=>$product->productId}"/></p>
+</div>

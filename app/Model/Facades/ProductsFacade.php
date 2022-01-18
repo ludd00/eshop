@@ -8,6 +8,7 @@ use App\Model\Entities\Product;
 use App\Model\Repositories\ProductRatingRepository;
 use App\Model\Repositories\ProductRepository;
 use Nette\Http\FileUpload;
+use Nette\Utils\Image;
 use Nette\Utils\Strings;
 
 /**
@@ -143,6 +144,22 @@ class ProductsFacade{
       $this->saveProduct($product);
     }
   }
+
+    /**
+     * Metoda pro ziskani fotky produktu
+     * @param FileUpload $fileUpload
+     * @param Product $product
+     * @throws \Exception
+     */
+    public function hasPhoto(int $productId) {
+            $product = $this->getProduct($productId);
+            $path = __DIR__.'/../../../www/img/products/'.$product->productId.'.'.$product->photoExtension;
+            if (file_exists($path)) {
+                return true;
+            }else{
+                return false;
+            }
+    }
 
   public function __construct(ProductRepository $productRepository, ProductRatingRepository $productRatingRepository){
     $this->productRepository=$productRepository;

@@ -132,7 +132,8 @@ class ProductEditForm extends Form{
         $this->addCheckbox('available', 'Nabízeno ke koupi');
 
         #region obrázek
-        $photoUpload=$this->addUpload('photo','Fotka produktu');
+        $label='Fotka produktu';
+        $photoUpload=$this->addUpload('photo',$label);
         //pokud není zadané ID produktu, je nahrání fotky povinné
         $photoUpload //vyžadování nahrání souboru, pokud není známé productId
         ->addConditionOn($productId, Form::EQUAL, '');

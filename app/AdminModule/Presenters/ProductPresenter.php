@@ -5,6 +5,7 @@ namespace App\AdminModule\Presenters;
 use App\AdminModule\Components\ProductEditForm\ProductEditForm;
 use App\AdminModule\Components\ProductEditForm\ProductEditFormFactory;
 use App\Model\Facades\ProductsFacade;
+use Nette\Utils\Image;
 
 /**
  * Class ProductPresenter
@@ -20,7 +21,7 @@ class ProductPresenter extends BasePresenter{
    * Akce pro vykreslení seznamu produktů
    */
   public function renderDefault():void {
-    $this->template->products=$this->productsFacade->findProducts(['order'=>'title']);
+    $this->template->products=$this->productsFacade->findProducts(['order'=>'category_id, title']);
   }
 
   /**
@@ -70,6 +71,27 @@ class ProductPresenter extends BasePresenter{
         }
 
         $this->redirect('default');
+    }
+
+    public function handleAvailable(int $productId){
+        $product = $this->productsFacade->getProduct($productId);
+        if (!$product->available){
+            $product->available = true;
+        }elseif($product->available = true){
+            $product->available = false;
+        }else{
+            $this->flashMessage('Dostupnost se nepodařilo změnit', 'error');
+        }
+        $this->productsFacade->saveProduct($product);
+    }
+
+    public function actionPhoto($id) {
+        $product = $this->productsFacade->getProduct($id);
+        $path = __DIR__.'/../../../www/img/products/'.$product->productId.'.'.$product->photoExtension;
+        if (file_exists($path)){
+            $image = Image::fromFile($path);
+            $image->send(Image::PNG);
+        }
     }
 
 

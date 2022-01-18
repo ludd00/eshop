@@ -6,14 +6,21 @@
         <table class="table table-hover mt-4">
             <thead>
                 <tr>
+                    <th scope="col">Kategorie</th>
                     <th scope="col">Název produktu</th>
+                    <th scope="col">Cena</th>
+                    <th scope="col">K prodeji</th>
                     <th scope="col" class="col-xl-1 col-md-2">Akce</th>
                 </tr>
             </thead>
             <tbody>
                 {foreach $products as $product}
                     <tr>
+                        <td>{$product->category->title}</td>
                         <td>{$product->title}</td>
+                        <td>{$product->price|number:2, ',', ' '} Kč</td>
+                        <td n:if="$product->available == 1"><a class="btn btn-sm btn-outline-success" n:href="Available! productId=>$product->productId">Ano</a></td>
+                        <td n:if="$product->available == 0"><a class="btn btn-sm btn-outline-danger" n:href="Available! productId=>$product->productId">Ne</a></td>
                         <td class="text-nowrap">
                             <a href="{link edit id=>$product->productId}" class="btn btn-sm btn-outline-primary">upravit</a>
                             <a href="{link delete id=>$product->productId}" class="btn btn-sm btn-outline-danger {if !$user->isAllowed($product,'delete')}disabled{/if}">smazat</a>
